@@ -81,10 +81,6 @@
       <!-- ================= เกี่ยวกับ ================= -->
       <v-container id="about" class="about">
         <h2 class="about-title">เกี่ยวกับโปรแกรมนี้</h2>
-        <p class="about-text">
-          นิว.grade คือโปรแกรมตัดเกรดจากคะแนน 0 - 100 สร้างเป็น Workshop 2 ของการอบรม Vue.js ที่ INET
-          เพื่อฝึกใช้ <b>v-model</b>, <b>computed</b>, <b>props</b> และการตรวจสอบข้อมูลที่ผู้ใช้กรอก
-        </p>
         <v-row>
           <v-col v-for="f in features" :key="f.title" cols="12" sm="4">
             <v-card class="card pa-6 about-card" outlined height="100%">
@@ -233,8 +229,7 @@ export default {
 }
 /* ---------- เกี่ยวกับ ---------- */
 .about { padding-top: 72px; padding-bottom: 72px; scroll-margin-top: 16px; }
-.about-title { font-size: 1.8rem; font-weight: 600; color: #1e1b4b; margin-bottom: 10px; }
-.about-text { color: #6b7280; max-width: 720px; margin-bottom: 20px; }
+.about-title { font-size: 1.8rem; font-weight: 600; color: #1e1b4b; margin-bottom: 20px; }
 .about-card-title { font-weight: 600; font-size: 1.1rem; color: #1e1b4b; margin-bottom: 6px; }
 .about-card-text { color: #6b7280; font-size: 0.92rem; }
 

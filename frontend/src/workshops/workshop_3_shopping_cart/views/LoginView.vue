@@ -31,14 +31,15 @@
         <v-form ref="form" @submit.prevent="submit">
           <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/shell) -->
           <AppField v-if="tab === 1" label="ชื่อ" field-id="reg-name" required>
-            <v-text-field id="reg-name" v-model="name" outlined placeholder="ชื่อของคุณ" prepend-inner-icon="mdi-account-outline" :rules="[required]" />
+            <v-text-field id="reg-name" v-model="name" autocomplete="off" outlined placeholder="ชื่อของคุณ" prepend-inner-icon="mdi-account-outline" :rules="[required]" />
           </AppField>
           <AppField label="อีเมล" field-id="login-email" required>
-            <v-text-field id="login-email" v-model="email" type="email" outlined placeholder="you@example.com" prepend-inner-icon="mdi-email-outline" :rules="[required]" />
+            <v-text-field id="login-email" v-model="email" type="email" autocomplete="off" outlined placeholder="you@example.com" prepend-inner-icon="mdi-email-outline" :rules="[required]" />
           </AppField>
           <AppField label="รหัสผ่าน" field-id="login-password" required>
             <v-text-field
               id="login-password"
+              autocomplete="new-password"
               v-model="password"
               outlined
               placeholder="รหัสผ่าน"
@@ -120,20 +121,31 @@ export default {
 </script>
 
 <style scoped>
-.login-page { min-height: 100vh; }
+.login-page { min-height: 100vh; background: #f4f2fc; }
 /* เว้นซ้ายมากหน่อย ไม่ให้แถบเลือก Workshop ที่ลอยอยู่ด้านซ้ายทับข้อความ */
-.hero-inner { padding: 64px 64px 64px 120px; }
+.hero-inner { position: relative; z-index: 1; padding: 64px 64px 64px 120px; }
+/* ฝั่งซ้าย: พื้นไล่สีโทนม่วง-ชมพู และมีวงกลมโปร่งแสงตกแต่ง */
 .hero {
+  position: relative;
+  overflow: hidden;
   align-items: center;
   color: #fff;
   background:
-    radial-gradient(circle at 15% 20%, rgba(236, 72, 153, 0.5), transparent 40%),
-    radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.4), transparent 40%),
-    linear-gradient(135deg, #1e1b6e 0%, #4f46e5 55%, #7c3aed 100%);
+    radial-gradient(circle at 12% 18%, rgba(236, 72, 153, 0.45), transparent 42%),
+    radial-gradient(circle at 70% 92%, rgba(124, 58, 237, 0.55), transparent 45%),
+    linear-gradient(145deg, #1e1b6e 0%, #4338ca 50%, #6d28d9 100%);
 }
+.hero::before, .hero::after { content: ''; position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.14); }
+.hero::before { width: 520px; height: 520px; right: -180px; top: -160px; background: rgba(255, 255, 255, 0.05); }
+.hero::after { width: 380px; height: 380px; right: 40px; bottom: -200px; background: rgba(255, 255, 255, 0.04); }
 .logo { margin-bottom: 48px; }
 .hero-headline { font-family: var(--font-heading); font-size: 3rem; line-height: 1.25; font-weight: 600; margin-bottom: 40px; }
 .feature { display: flex; align-items: center; margin-bottom: 18px; font-size: 1.05rem; opacity: 0.95; }
-.form-side { display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
+.form-side {
+  display: flex; align-items: center; justify-content: center; padding: 32px 16px;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 95%, rgba(99, 102, 241, 0.12), transparent 45%);
+}
 .form-card { width: 100%; max-width: 440px; background: #fff; }
 </style>

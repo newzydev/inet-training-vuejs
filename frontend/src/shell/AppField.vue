@@ -53,4 +53,7 @@ export default {
 .app-field >>> .v-text-field textarea::placeholder { color: #a3a6c2; opacity: 1; }
 /* ไอคอนหน้าช่อง */
 .app-field >>> .v-input__prepend-inner .v-icon { color: #818cf8; }
+/* เว้นระยะไอคอนจากขอบซ้ายและจากข้อความ ไม่ให้ชิดเกินไป */
+.app-field >>> .v-text-field--outlined .v-input__prepend-inner { margin-top: 0; padding-right: 14px !important; align-self: center; }
+.app-field >>> .v-text-field--outlined > .v-input__control > .v-input__slot { padding-left: 18px !important; padding-right: 14px !important; }
 </style>
