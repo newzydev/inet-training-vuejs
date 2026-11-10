@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment variables (มีความลับ) — เก็บเฉพาะ .env.example
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# รูปที่ผู้ใช้อัปโหลด — ไม่เก็บไฟล์ แต่เก็บโฟลเดอร์ไว้ด้วย .gitkeep
+uploads/avatars/*
+uploads/products/*
+!uploads/avatars/.gitkeep
+!uploads/products/.gitkeep
