@@ -8,29 +8,40 @@
         <v-alert v-if="error" type="error" text dense>{{ error }}</v-alert>
 
         <v-form ref="form" @submit.prevent="save">
-          <v-text-field v-model="form.name" label="ชื่อสินค้า" outlined dense :rules="[v => !!v || 'กรุณากรอกชื่อสินค้า']" />
-          <v-textarea v-model="form.description" label="รายละเอียด" outlined dense rows="3" />
+          <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/shell) -->
+          <AppField label="ชื่อสินค้า" field-id="p-name" required>
+            <v-text-field id="p-name" v-model="form.name" outlined placeholder="เช่น หูฟังไร้สาย" :rules="[v => !!v || 'กรุณากรอกชื่อสินค้า']" />
+          </AppField>
+          <AppField label="รายละเอียด" field-id="p-desc">
+            <v-textarea id="p-desc" v-model="form.description" outlined rows="3" placeholder="อธิบายสินค้าสั้น ๆ" />
+          </AppField>
           <v-row dense>
             <v-col cols="6">
-              <v-text-field v-model="form.price" label="ราคา (บาท)" type="number" min="0" outlined dense :rules="[priceRule]" />
+              <AppField label="ราคา (บาท)" field-id="p-price" required>
+                <v-text-field id="p-price" v-model="form.price" type="number" min="0" outlined placeholder="0" :rules="[priceRule]" />
+              </AppField>
             </v-col>
             <v-col cols="6">
-              <v-text-field v-model="form.stock" label="จำนวนสต็อก" type="number" min="0" outlined dense :rules="[stockRule]" />
+              <AppField label="จำนวนสต็อก" field-id="p-stock" required>
+                <v-text-field id="p-stock" v-model="form.stock" type="number" min="0" outlined placeholder="0" :rules="[stockRule]" />
+              </AppField>
             </v-col>
           </v-row>
 
           <!-- รูปสินค้า: เลือกไฟล์แล้วแสดงตัวอย่างก่อนบันทึก -->
-          <v-file-input
-            v-model="file"
-            label="รูปสินค้า (jpg, png, webp, gif)"
-            accept="image/png,image/jpeg,image/webp,image/gif"
-            prepend-icon=""
-            prepend-inner-icon="mdi-image-outline"
-            outlined
-            dense
-            show-size
-            @change="makePreview"
-          />
+          <AppField label="รูปสินค้า" field-id="p-image">
+            <v-file-input
+              id="p-image"
+              v-model="file"
+              placeholder="เลือกไฟล์ (jpg, png, webp, gif)"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              prepend-icon=""
+              prepend-inner-icon="mdi-image-outline"
+              outlined
+              show-size
+              @change="makePreview"
+            />
+          </AppField>
           <v-img v-if="preview" :src="preview" max-height="160" contain class="rounded-lg grey lighten-4" />
         </v-form>
       </v-card-text>
@@ -46,10 +57,12 @@
 
 <script>
 import api, { imageUrl } from '../api'
+import AppField from '@/shell/AppField.vue'
 
 const empty = () => ({ name: '', description: '', price: '', stock: '' })
 
 export default {
+  components: { AppField },
   props: {
     value: { type: Boolean, default: false }, // เปิด/ปิดป๊อปอัป (v-model)
     product: { type: Object, default: null }

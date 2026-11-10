@@ -23,7 +23,10 @@
 
         <v-alert v-if="error" type="error" text dense>{{ error }}</v-alert>
 
-        <v-text-field v-model="name" label="ชื่อ" outlined dense prepend-inner-icon="mdi-account-outline" />
+        <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/shell) -->
+        <AppField label="ชื่อ" field-id="profile-name">
+          <v-text-field id="profile-name" v-model="name" outlined placeholder="ชื่อที่แสดง" prepend-inner-icon="mdi-account-outline" />
+        </AppField>
 
         <!-- เปลี่ยนรหัสผ่าน: กางออกเมื่อต้องการเท่านั้น -->
         <v-btn text small color="primary" class="mb-2" @click="changePassword = !changePassword">
@@ -31,8 +34,12 @@
         </v-btn>
         <v-expand-transition>
           <div v-show="changePassword">
-            <v-text-field v-model="currentPassword" label="รหัสผ่านเดิม" type="password" outlined dense />
-            <v-text-field v-model="newPassword" label="รหัสผ่านใหม่ (อย่างน้อย 4 ตัวอักษร)" type="password" outlined dense />
+            <AppField label="รหัสผ่านเดิม" field-id="profile-current">
+              <v-text-field id="profile-current" v-model="currentPassword" type="password" outlined placeholder="รหัสผ่านที่ใช้อยู่ตอนนี้" />
+            </AppField>
+            <AppField label="รหัสผ่านใหม่" field-id="profile-new">
+              <v-text-field id="profile-new" v-model="newPassword" type="password" outlined placeholder="อย่างน้อย 4 ตัวอักษร" />
+            </AppField>
           </div>
         </v-expand-transition>
       </v-card-text>
@@ -48,8 +55,10 @@
 
 <script>
 import api, { imageUrl } from '../api'
+import AppField from '@/shell/AppField.vue'
 
 export default {
+  components: { AppField },
   props: { value: { type: Boolean, default: false } },
   data () {
     return { name: '', currentPassword: '', newPassword: '', changePassword: false, avatarFile: null, preview: '', saving: false, error: '' }

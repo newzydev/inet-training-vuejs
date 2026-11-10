@@ -29,18 +29,26 @@
 
         <!-- @submit.prevent = กด Enter หรือกดปุ่มแล้วเรียก submit() โดยไม่รีเฟรชหน้า -->
         <v-form ref="form" @submit.prevent="submit">
-          <v-text-field v-if="tab === 1" v-model="name" label="ชื่อ" outlined prepend-inner-icon="mdi-account-outline" :rules="[required]" />
-          <v-text-field v-model="email" label="อีเมล" type="email" outlined prepend-inner-icon="mdi-email-outline" :rules="[required]" />
-          <v-text-field
-            v-model="password"
-            label="รหัสผ่าน"
-            outlined
-            prepend-inner-icon="mdi-lock-outline"
-            :type="showPass ? 'text' : 'password'"
-            :append-icon="showPass ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-            :rules="[required]"
-            @click:append="showPass = !showPass"
-          />
+          <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/shell) -->
+          <AppField v-if="tab === 1" label="ชื่อ" field-id="reg-name" required>
+            <v-text-field id="reg-name" v-model="name" outlined placeholder="ชื่อของคุณ" prepend-inner-icon="mdi-account-outline" :rules="[required]" />
+          </AppField>
+          <AppField label="อีเมล" field-id="login-email" required>
+            <v-text-field id="login-email" v-model="email" type="email" outlined placeholder="you@example.com" prepend-inner-icon="mdi-email-outline" :rules="[required]" />
+          </AppField>
+          <AppField label="รหัสผ่าน" field-id="login-password" required>
+            <v-text-field
+              id="login-password"
+              v-model="password"
+              outlined
+              placeholder="รหัสผ่าน"
+              prepend-inner-icon="mdi-lock-outline"
+              :type="showPass ? 'text' : 'password'"
+              :append-icon="showPass ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+              :rules="[required]"
+              @click:append="showPass = !showPass"
+            />
+          </AppField>
           <v-btn type="submit" block large depressed color="primary" :loading="loading" class="mt-2">
             {{ tab === 0 ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก' }}
           </v-btn>
@@ -52,8 +60,10 @@
 
 <script>
 import api from '../api'
+import AppField from '@/shell/AppField.vue'
 
 export default {
+  components: { AppField },
   data () {
     return {
       tab: 0, // 0 = เข้าสู่ระบบ, 1 = สมัครสมาชิก

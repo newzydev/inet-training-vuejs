@@ -33,6 +33,7 @@ src/
 ├── router/index.js         เส้นทางทั้งหมด (รวม route ของ Workshop 3)
 ├── plugins/vuetify.js      ธีม + ภาษาไทย
 ├── shell/WorkshopRail.vue  แถบเลือก Workshop ด้านซ้าย
+├── shell/AppField.vue      ช่องกรอกมาตรฐาน (label อยู่ด้านบน) ใช้ครอบ v-text-field ทุกที่
 └── workshops/
     ├── index.js            รายการ Workshop (ใช้ทำปุ่มเลือก)
     ├── workshop_1_profile_card/      ProfileView.vue + README.md
