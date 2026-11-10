@@ -29,7 +29,7 @@
     </v-app-bar>
 
       <!-- ================= Hero ================= -->
-      <section id="home" class="hero">
+      <section id="home" class="hero hero-bg">
         <v-container class="hero-inner">
           <!-- รูปโปรไฟล์ : :src ผูกกับตัวแปร profile.photo (ไฟล์อยู่ใน src/assets) -->
           <v-avatar size="150" class="avatar mb-6">
@@ -329,11 +329,7 @@ export default {
   color: #fff;
   text-align: center;
   padding: 160px 0 100px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(236, 72, 153, 0.5), transparent 40%),
-    radial-gradient(circle at 85% 15%, rgba(6, 182, 212, 0.4), transparent 40%),
-    linear-gradient(135deg, #1e1b6e 0%, #4f46e5 55%, #7c3aed 100%);
+  /* พื้นหลังใช้คลาส hero-bg ส่วนกลาง (App.vue) */
 }
 .avatar {
   background: linear-gradient(135deg, #f472b6, #22d3ee);

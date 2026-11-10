@@ -1,7 +1,7 @@
 <template>
   <div id="top" class="w2">
       <!-- ================= ส่วนหัว ================= -->
-      <header class="hero">
+      <header class="hero hero-bg">
         <!-- แถบบนสุด: โลโก้ตำแหน่งเดียวกับ Workshop 1 และ 3 (container เดียวกัน สูง 68px) -->
         <div class="topbar" :class="{ scrolled: scrolled }">
           <v-container class="d-flex align-center py-0">
@@ -222,10 +222,7 @@ export default {
   text-align: center;
   color: #fff;
   padding: 92px 16px 120px;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(236, 72, 153, 0.5), transparent 40%),
-    radial-gradient(circle at 85% 15%, rgba(6, 182, 212, 0.4), transparent 40%),
-    linear-gradient(135deg, #1e1b6e 0%, #4f46e5 55%, #7c3aed 100%);
+  /* พื้นหลังใช้คลาส hero-bg ส่วนกลาง (App.vue) */
 }
 /* ---------- เกี่ยวกับ ---------- */
 .about { padding-top: 72px; padding-bottom: 72px; scroll-margin-top: 16px; }

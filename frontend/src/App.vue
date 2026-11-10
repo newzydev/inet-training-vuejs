@@ -53,6 +53,21 @@ body .v-application [class*='text-caption'], body .v-application [class*='text-o
 .v-application.theme--light { background: #f4f2fc !important; }
 html { scroll-behavior: smooth; }
 
+/* พื้นหลัง Hero แบบเดียวกันทุก Workshop (ใส่คลาส hero-bg ที่ส่วนหัว): ไล่สีม่วง-ชมพู + วงกลมโปร่งแสงตกแต่ง */
+.hero-bg {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(236, 72, 153, 0.45), transparent 42%),
+    radial-gradient(circle at 70% 92%, rgba(124, 58, 237, 0.55), transparent 45%),
+    linear-gradient(145deg, #1e1b6e 0%, #4338ca 50%, #6d28d9 100%);
+}
+.hero-bg::before, .hero-bg::after { content: ''; position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.14); pointer-events: none; }
+.hero-bg::before { width: 520px; height: 520px; right: -180px; top: -160px; background: rgba(255, 255, 255, 0.05); }
+.hero-bg::after { width: 380px; height: 380px; left: -120px; bottom: -220px; background: rgba(255, 255, 255, 0.04); }
+/* เนื้อหาใน Hero ต้องอยู่เหนือวงกลมตกแต่ง (ยกเว้นแถบบนที่ fixed อยู่แล้ว) */
+.hero-bg > *:not(.topbar) { position: relative; z-index: 1; }
+
 /* ความกว้างเนื้อหากลาง: กำหนดที่เดียว ใช้กับ navbar, hero และเนื้อหาของทุก Workshop ให้ขอบซ้าย-ขวาตรงกัน
    (ชนะค่า max-width ตามขนาดจอของ Vuetify) และตัด padding ของ navbar ออก ให้โลโก้ตรงกับขอบเนื้อหา */
 :root { --page-width: 1180px; }
