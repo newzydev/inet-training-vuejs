@@ -6,7 +6,7 @@
       <div class="icon-wrap" :class="color">
         <v-icon color="white">{{ icon }}</v-icon>
       </div>
-      <v-card-title class="title">{{ title }}</v-card-title>
+      <v-card-title class="confirm-title">{{ title }}</v-card-title>
       <v-card-text class="text"><slot></slot></v-card-text>
       <v-card-actions class="px-6 pb-5">
         <v-spacer />
@@ -44,6 +44,6 @@ export default {
 .icon-wrap.error { background: #ef4444; box-shadow: 0 0 0 8px rgba(239, 68, 68, 0.15); }
 .icon-wrap.primary { background: #5b3df5; box-shadow: 0 0 0 8px rgba(91, 61, 245, 0.15); }
 .icon-wrap.warning { background: #fb8c00; box-shadow: 0 0 0 8px rgba(251, 140, 0, 0.15); }
-.title { justify-content: center; font-family: 'Kanit', sans-serif; font-size: 1.3rem; }
+.confirm-title { justify-content: center; font-family: var(--font-heading); font-size: 1.3rem; }
 .text { color: #4b5563; }
 </style>

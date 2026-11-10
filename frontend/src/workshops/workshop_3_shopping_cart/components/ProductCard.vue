@@ -98,6 +98,6 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.price { font-family: 'Kanit', sans-serif; font-size: 1.35rem; font-weight: 600; color: #4f46e5; }
+.price { font-family: var(--font-heading); font-size: 1.35rem; font-weight: 600; color: #4f46e5; }
 .stock-text { font-size: 0.78rem; color: #9ca3af; }
 </style>

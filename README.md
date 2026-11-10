@@ -32,12 +32,24 @@ inet-training-vuejs/
 ## Requirements
 
 - Node.js 16 ขึ้นไป (ทดสอบกับ v22) และ npm
-- MongoDB (พอร์ต 27017) เฉพาะเมื่อจะใช้ Workshop 3
+- MongoDB (พอร์ต 27017) เปิดไว้ก่อนรัน Back-end
 - VS Code (แนะนำ)
 
 ## วิธีรัน
 
-**Workshop 1 และ 2** ใช้แค่ Front-end
+เปิด **2 เทอร์มินัล** แล้วรันตามลำดับ: **Back-end ก่อน** แล้วค่อย **Front-end** (เปิดให้ครบทั้งสองตัว จะใช้ได้ทั้ง 3 Workshop)
+
+**1) Back-end** (เทอร์มินัลที่ 1)
+
+```bash
+cd backend
+npm install
+cp .env.example .env     # ครั้งแรกเท่านั้น: แล้วแก้ค่าใน .env
+npm run seed             # ครั้งแรกเท่านั้น: สร้าง admin คนแรก
+npm start                # รอจนเห็น "MongoDB connected" (รันที่ http://localhost:3000)
+```
+
+**2) Front-end** (เทอร์มินัลที่ 2)
 
 ```bash
 cd frontend
@@ -47,23 +59,17 @@ npm run serve
 
 เปิด http://localhost:8080 แล้วเลือก Workshop จากปุ่มด้านซ้ายของหน้าจอ (ถ้าพอร์ตถูกใช้อยู่ จะขึ้นพอร์ตถัดไป ดูในเทอร์มินัล)
 
-**Workshop 3** ต้องเปิด Back-end ด้วย (เทอร์มินัลอีกอัน)
+เข้าสู่ระบบ admin ของ Workshop 3 ด้วย `ADMIN_EMAIL` / `ADMIN_PASSWORD` ใน `backend/.env` รายละเอียดอยู่ที่ [README ของ Workshop 3](frontend/src/workshops/workshop_3_shopping_cart/README.md) และ [backend/README.md](backend/README.md)
 
-```bash
-cd backend
-npm install
-cp .env.example .env     # แล้วแก้ค่าใน .env (ถ้ายังไม่มี)
-npm run seed             # สร้าง admin คนแรก (ทำครั้งเดียว)
-npm start                # รันที่ http://localhost:3000
-```
+> ถ้า `npm start` ขึ้น `Port 3000 is already in use` แปลว่ามี Back-end รันอยู่แล้ว ให้ปิดตัวเก่าก่อน (หรือ `Ctrl+C` ในเทอร์มินัลเดิม)
 
-เข้าสู่ระบบ admin ด้วย `ADMIN_EMAIL` / `ADMIN_PASSWORD` ใน `backend/.env` รายละเอียดอยู่ที่ [README ของ Workshop 3](frontend/src/workshops/workshop_3_shopping_cart/README.md) และ [backend/README.md](backend/README.md)
-
-| Command (ในโฟลเดอร์ frontend) | Description |
-| --- | --- |
-| `npm run serve` | รัน dev server แบบ hot-reload |
-| `npm run build` | build สำหรับ production (ผลลัพธ์ใน `dist/`) |
-| `npm run lint` | ตรวจและแก้ไขโค้ดด้วย ESLint |
+| Command | โฟลเดอร์ | Description |
+| --- | --- | --- |
+| `npm start` | backend | รัน API (รีสตาร์ตเองเมื่อแก้โค้ดด้วย nodemon) |
+| `npm run seed` | backend | สร้าง admin คนแรก (ทำครั้งเดียว) |
+| `npm run serve` | frontend | รัน dev server แบบ hot-reload |
+| `npm run build` | frontend | build สำหรับ production (ผลลัพธ์ใน `dist/`) |
+| `npm run lint` | frontend | ตรวจและแก้ไขโค้ดด้วย ESLint |
 
 ## หมายเหตุ
 

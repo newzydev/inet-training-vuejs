@@ -129,7 +129,7 @@ export default {
   .page-title,
   .price,
   .display-font {
-    font-family: 'Kanit', sans-serif !important;
+    font-family: var(--font-heading) !important;
   }
 
   /* ---------- แถบเมนู: กระจกฝ้าโปร่งแสง ---------- */

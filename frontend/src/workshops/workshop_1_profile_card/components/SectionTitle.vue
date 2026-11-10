@@ -28,7 +28,7 @@ export default {
 }
 .heading {
   margin-top: 4px;
-  font-family: 'Kanit', sans-serif;
+  font-family: var(--font-heading);
   font-size: 2.1rem;
   font-weight: 600;
 }

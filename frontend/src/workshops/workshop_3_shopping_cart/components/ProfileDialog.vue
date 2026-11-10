@@ -123,7 +123,7 @@ export default {
 }
 .avatar-pick { position: absolute; left: 50%; bottom: -52px; transform: translateX(-50%); cursor: pointer; }
 .avatar { border: 4px solid #fff; box-shadow: 0 12px 28px -10px rgba(30, 27, 110, 0.5); }
-.initial { color: #fff; font-family: 'Kanit', sans-serif; font-size: 2.2rem; font-weight: 600; }
+.initial { color: #fff; font-family: var(--font-heading); font-size: 2.2rem; font-weight: 600; }
 .camera {
   position: absolute;
   right: 2px;
@@ -137,5 +137,5 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.who { font-family: 'Kanit', sans-serif; font-size: 1.35rem; font-weight: 600; color: #1e1b4b; }
+.who { font-family: var(--font-heading); font-size: 1.35rem; font-weight: 600; color: #1e1b4b; }
 </style>

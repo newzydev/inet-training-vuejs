@@ -161,7 +161,7 @@ export default {
 .card-title,
 .result-title,
 .grade-circle {
-  font-family: 'Kanit', sans-serif !important;
+  font-family: var(--font-heading) !important;
 }
 
 /* ---------- ส่วนหัว ---------- */
@@ -169,7 +169,7 @@ export default {
   position: absolute;
   top: 24px;
   left: 32px;
-  font-family: 'Kanit', sans-serif !important;
+  font-family: var(--font-heading) !important;
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -208,7 +208,7 @@ export default {
 }
 /* ตัวเลขที่พิมพ์ : ใหญ่ ใช้ฟอนต์ Kanit */
 .score-input input {
-  font-family: 'Kanit', sans-serif !important;
+  font-family: var(--font-heading) !important;
   font-size: 2rem;
   font-weight: 500;
   color: #1e1b4b;

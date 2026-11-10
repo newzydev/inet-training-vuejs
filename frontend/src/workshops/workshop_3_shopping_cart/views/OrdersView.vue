@@ -162,7 +162,7 @@ export default {
 </script>
 
 <style scoped>
-.stat-value { font-family: 'Kanit', sans-serif; font-size: 1.5rem; font-weight: 600; }
+.stat-value { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 600; }
 .skeleton, .empty { border-radius: 22px; text-align: center; }
 .opacity { opacity: 0.6; }
 
@@ -187,7 +187,7 @@ export default {
 .cancelled-note { margin-top: 12px; font-size: 0.85rem; color: #6b7280; }
 
 .dialog-card { border-radius: 22px !important; }
-.dialog-title { font-family: 'Kanit', sans-serif; }
+.dialog-title { font-family: var(--font-heading); }
 
 @media (max-width: 600px) {
   .order { flex-wrap: wrap; }

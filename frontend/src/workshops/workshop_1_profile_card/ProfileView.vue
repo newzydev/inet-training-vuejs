@@ -294,7 +294,7 @@ export default {
 .card-title,
 .col-heading,
 .job-role {
-  font-family: 'Kanit', sans-serif !important;
+  font-family: var(--font-heading) !important;
 }
 
 /* ---------- Navbar ---------- */

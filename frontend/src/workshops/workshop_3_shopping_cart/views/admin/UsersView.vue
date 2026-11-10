@@ -235,7 +235,7 @@ export default {
 </script>
 
 <style scoped>
-.stat-value { font-family: 'Kanit', sans-serif; font-size: 1.5rem; font-weight: 600; }
+.stat-value { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 600; }
 .bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 14px 4px; }
 .search { max-width: 320px; }
 </style>

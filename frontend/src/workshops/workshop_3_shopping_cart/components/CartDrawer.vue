@@ -3,7 +3,7 @@
   <v-navigation-drawer v-model="open" right temporary fixed width="420" class="cart-drawer">
     <div class="head">
       <div>
-        <div class="title">ตะกร้าของคุณ</div>
+        <div class="drawer-title">ตะกร้าของคุณ</div>
         <div class="caption grey--text">{{ count }} ชิ้น</div>
       </div>
       <v-btn icon aria-label="ปิด" @click="open = false"><v-icon>mdi-close</v-icon></v-btn>
@@ -116,7 +116,7 @@ export default {
   justify-content: space-between;
   padding: 20px 20px 12px;
 }
-.title { font-family: 'Kanit', sans-serif; font-size: 1.4rem; font-weight: 600; color: #1e1b4b; }
+.drawer-title { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 600; color: #1e1b4b; }
 .empty { text-align: center; padding: 72px 24px; }
 
 .item { display: flex; gap: 14px; padding: 14px 20px; border-top: 1px solid #f1f0f9; position: relative; }
@@ -124,9 +124,9 @@ export default {
 .item-info { flex: 1; min-width: 0; padding-right: 18px; }
 .item-name { display: block; font-weight: 600; color: #1e1b4b; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .unit { font-size: 0.82rem; color: #9ca3af; }
-.line { font-family: 'Kanit', sans-serif; color: #4f46e5; }
+.line { font-family: var(--font-heading); color: #4f46e5; }
 .remove { position: absolute !important; top: 12px; right: 14px; color: #9ca3af !important; }
 
 .foot { padding: 18px 20px 22px; border-top: 1px solid #ececf6; background: #fff; }
-.total { font-family: 'Kanit', sans-serif; font-size: 1.7rem; font-weight: 600; color: #4f46e5; }
+.total { font-family: var(--font-heading); font-size: 1.7rem; font-weight: 600; color: #4f46e5; }
 </style>

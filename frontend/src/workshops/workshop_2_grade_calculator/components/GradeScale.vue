@@ -48,7 +48,7 @@ export default {
 }
 .scale-grade {
   color: #fff;
-  font-family: 'Kanit', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 600;
   font-size: 1.1rem;
 }

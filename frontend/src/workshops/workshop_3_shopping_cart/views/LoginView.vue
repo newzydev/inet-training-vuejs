@@ -5,7 +5,7 @@
       <!-- padding ต้องอยู่ที่ div ด้านใน เพราะ v-row แบบ no-gutters จะลบ padding ของ v-col -->
       <div class="hero-inner">
         <div class="logo">นิว<span>.shop</span></div>
-        <h1 class="headline">ช้อปง่าย<br>สั่งซื้อได้ในไม่กี่คลิก</h1>
+        <h1 class="hero-headline">ช้อปง่าย<br>สั่งซื้อได้ในไม่กี่คลิก</h1>
         <div v-for="f in features" :key="f.text" class="feature">
           <v-avatar size="40" color="rgba(255,255,255,.16)" class="mr-4"><v-icon color="white">{{ f.icon }}</v-icon></v-avatar>
           {{ f.text }}
@@ -120,9 +120,9 @@ export default {
     radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.4), transparent 40%),
     linear-gradient(135deg, #1e1b6e 0%, #4f46e5 55%, #7c3aed 100%);
 }
-.logo { font-family: 'Kanit', sans-serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 48px; }
+.logo { font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700; margin-bottom: 48px; }
 .logo span { color: #f9a8d4; }
-.headline { font-family: 'Kanit', sans-serif; font-size: 3rem; line-height: 1.25; font-weight: 600; margin-bottom: 40px; }
+.hero-headline { font-family: var(--font-heading); font-size: 3rem; line-height: 1.25; font-weight: 600; margin-bottom: 40px; }
 .feature { display: flex; align-items: center; margin-bottom: 18px; font-size: 1.05rem; opacity: 0.95; }
 .form-side { display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
 .form-card { width: 100%; max-width: 440px; background: #fff; }

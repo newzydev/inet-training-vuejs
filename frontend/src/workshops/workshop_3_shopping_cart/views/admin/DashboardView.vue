@@ -178,7 +178,7 @@ export default {
 <style scoped>
 .skeleton { border-radius: 22px; }
 .h-100 { height: 100%; }
-.stat .value { font-family: 'Kanit', sans-serif; font-size: 1.9rem; font-weight: 600; color: #1e1b4b; line-height: 1.2; }
+.stat .value { font-family: var(--font-heading); font-size: 1.9rem; font-weight: 600; color: #1e1b4b; line-height: 1.2; }
 .stat .sub { font-size: 0.8rem; color: #9ca3af; margin-top: 2px; }
 
 /* กราฟแท่งยอดขายรายวัน */

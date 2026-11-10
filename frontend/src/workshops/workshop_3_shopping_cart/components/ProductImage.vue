@@ -42,7 +42,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.9);
-  font-family: 'Kanit', sans-serif;
+  font-family: var(--font-heading);
   font-size: 3.2rem;
   font-weight: 600;
 }
