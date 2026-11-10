@@ -22,7 +22,7 @@
         </v-btn>
 
         <!-- เมนูผู้ใช้ -->
-        <v-menu offset-y left min-width="240" content-class="user-menu">
+        <v-menu offset-y left nudge-bottom="8" min-width="280" content-class="user-menu">
           <template v-slot:activator="{ on }">
             <v-btn text rounded class="user-btn" v-on="on">
               <v-avatar size="34" color="primary" class="mr-2">
@@ -33,16 +33,19 @@
               <v-icon right small>mdi-chevron-down</v-icon>
             </v-btn>
           </template>
-          <v-list dense>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">{{ user && user.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{ user && user.email }}</v-list-item-subtitle>
-                <div class="mt-1">
-                  <v-chip x-small :color="isAdmin ? 'secondary' : 'primary'" dark>{{ isAdmin ? 'ผู้ดูแลระบบ' : 'สมาชิก' }}</v-chip>
-                </div>
-              </v-list-item-content>
-            </v-list-item>
+          <v-list class="py-0">
+            <!-- ส่วนหัวของเมนู: รูป + ชื่อ + อีเมล + บทบาท -->
+            <div class="menu-head">
+              <v-avatar size="46" color="primary">
+                <v-img v-if="avatar" :src="avatar" />
+                <span v-else class="white--text">{{ initial }}</span>
+              </v-avatar>
+              <div class="menu-who">
+                <div class="m-name">{{ user && user.name }}</div>
+                <div class="m-mail">{{ user && user.email }}</div>
+                <v-chip x-small class="mt-1" :color="isAdmin ? 'secondary' : 'primary'" dark>{{ isAdmin ? 'ผู้ดูแลระบบ' : 'สมาชิก' }}</v-chip>
+              </div>
+            </div>
             <v-divider />
             <v-list-item @click="profileOpen = true">
               <v-list-item-icon><v-icon small>mdi-account-cog-outline</v-icon></v-list-item-icon>
@@ -150,7 +153,18 @@ export default {
   /* เมนูที่เปิดอยู่: พื้นสีม่วงอ่อน ตัวอักษรสีหลัก */
   .nav-btn.v-btn--active { background: #eef2ff; color: #4f46e5 !important; }
   .nav-btn.v-btn--active::before { opacity: 0; }
-  .user-btn { text-transform: none; letter-spacing: 0; }
+  /* ปุ่มผู้ใช้: เม็ดยาสีขาวขอบบาง ตอนเมนูเปิดเป็นสีม่วงอ่อน (ไม่ให้เป็นก้อนสีเทาทึบแบบค่าเริ่มต้นของ Vuetify) */
+  .user-btn {
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0 12px 0 6px !important;
+    height: 46px !important;
+    background: #fff;
+    border: 1px solid #e6e7f5;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .user-btn:hover, .user-btn.v-btn--active { background: #f1f0ff; border-color: #c9c9f5; }
+  .user-btn::before, .user-btn.v-btn--active::before { opacity: 0 !important; }
 
   /* ---------- ส่วนที่ใช้ร่วมกันหลายหน้า ---------- */
   .page-wrap { max-width: 1180px; padding-top: 36px; padding-bottom: 72px; }
@@ -172,5 +186,17 @@ export default {
 }
 
 /* ป๊อปอัปเมนูผู้ใช้ถูก Vuetify ย้ายออกนอก .w3 จึงเขียนสไตล์ที่นี่แบบส่วนกลาง */
-.user-menu { border-radius: 18px !important; box-shadow: 0 24px 50px -20px rgba(30, 27, 110, 0.4) !important; }
+.user-menu {
+  border-radius: 20px !important;
+  border: 1px solid #ececf6;
+  box-shadow: 0 28px 56px -22px rgba(30, 27, 110, 0.45) !important;
+  overflow: hidden;
+}
+.user-menu .menu-head { display: flex; align-items: center; gap: 14px; padding: 18px 18px 16px; background: linear-gradient(135deg, #f5f3ff, #fdf2f8); }
+.user-menu .menu-who { min-width: 0; }
+.user-menu .m-name { font-weight: 600; font-size: 1.02rem; color: #1e1b4b; }
+.user-menu .m-mail { font-size: 0.8rem; color: #8b8fa8; overflow: hidden; text-overflow: ellipsis; }
+.user-menu .v-list-item { min-height: 50px; padding: 0 18px; }
+.user-menu .v-list-item__title { font-size: 0.95rem; }
+.user-menu .v-list-item__icon { margin: 12px 16px 12px 0; }
 </style>

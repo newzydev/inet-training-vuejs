@@ -40,14 +40,10 @@
       <div class="o-img"><ProductImage :product="o.product || { name: '?' }" /></div>
 
       <div class="o-main">
-        <div class="d-flex align-center flex-wrap">
-          <router-link v-if="o.product" :to="'/workshop-3/product/' + o.product._id" class="o-name">{{ o.product.name }}</router-link>
-          <span v-else class="o-name grey--text">สินค้าถูกลบแล้ว</span>
-          <v-spacer />
-          <OrderStatusChip :status="o.status" />
-        </div>
+        <router-link v-if="o.product" :to="'/workshop-3/product/' + o.product._id" class="o-name">{{ o.product.name }}</router-link>
+        <span v-else class="o-name grey--text">สินค้าถูกลบแล้ว</span>
         <div class="meta">#{{ o._id.slice(-6).toUpperCase() }} · {{ o.createdAt | dateTime }}</div>
-        <div class="calc">{{ o.quantity }} × {{ o.unitPrice | baht }} = <b class="price">{{ o.totalPrice | baht }}</b></div>
+        <div class="calc">{{ o.quantity }} ชิ้น × {{ o.unitPrice | baht }}</div>
 
         <!-- ขั้นตอนของออเดอร์ (ที่ยกเลิกแล้วแสดงข้อความแทน) -->
         <div v-if="statusOf(o.status).step >= 0" class="steps">
@@ -58,8 +54,11 @@
         <div v-else class="cancelled-note"><v-icon x-small color="error">mdi-information-outline</v-icon> ออเดอร์นี้ถูกยกเลิกแล้ว สต็อกถูกคืนให้สินค้าเรียบร้อย</div>
       </div>
 
-      <div v-if="canCancel(o.status)" class="o-action">
-        <v-btn small outlined rounded color="error" @click="askCancel(o)">ยกเลิกออเดอร์</v-btn>
+      <!-- คอลัมน์ขวา: สถานะ -> ยอดรวม -> ปุ่มยกเลิก เรียงลงมาชิดขวา -->
+      <div class="o-side">
+        <OrderStatusChip :status="o.status" />
+        <div class="o-total price">{{ o.totalPrice | baht }}</div>
+        <v-btn v-if="canCancel(o.status)" small outlined rounded color="error" @click="askCancel(o)">ยกเลิกออเดอร์</v-btn>
       </div>
     </v-card>
 
@@ -169,11 +168,23 @@ export default {
 .order { display: flex; gap: 18px; align-items: flex-start; }
 .o-img { width: 96px; flex-shrink: 0; border-radius: 16px; overflow: hidden; }
 .o-main { flex: 1; min-width: 0; }
-.o-name { font-weight: 600; font-size: 1.1rem; color: #1e1b4b; text-decoration: none; margin-right: 12px; }
+.o-name { display: block; font-weight: 600; font-size: 1.15rem; color: #1e1b4b; text-decoration: none; }
 .meta { color: #9ca3af; font-size: 0.82rem; margin: 2px 0 6px; }
 .calc { color: #4b5563; }
-.calc .price { font-size: 1.15rem; margin-left: 4px; }
-.o-action { align-self: center; }
+
+/* คอลัมน์ขวา: เรียงชิดขวา สถานะอยู่บน ปุ่มอยู่ล่างสุดของการ์ด */
+.o-side {
+  align-self: stretch;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  padding-left: 18px;
+  border-left: 1px dashed #e8e8f4;
+}
+.o-total { font-size: 1.6rem; line-height: 1.1; }
 
 /* ขั้นตอนสถานะ: จุด 3 จุดเรียงกัน จุดที่ผ่านแล้วเป็นสีม่วง */
 .steps { display: flex; margin-top: 14px; max-width: 420px; }
@@ -192,6 +203,7 @@ export default {
 @media (max-width: 600px) {
   .order { flex-wrap: wrap; }
   .o-img { width: 72px; }
-  .o-action { width: 100%; }
+  /* มือถือ: คอลัมน์ขวาย้ายลงล่างเป็นแถวเดียว */
+  .o-side { width: 100%; flex-direction: row; align-items: center; flex-wrap: wrap; padding: 12px 0 0; border-left: 0; border-top: 1px dashed #e8e8f4; }
 }
 </style>
