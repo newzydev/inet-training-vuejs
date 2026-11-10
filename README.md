@@ -25,8 +25,31 @@ inet-training-vuejs/
 
 ## Tech stack
 
-- Front-end: Vue 2 + Vue CLI 5, Vuetify 2, Vue Router, Vuex, Axios, ESLint
-- Back-end: Node.js, Express, MongoDB (Mongoose), JWT, multer, Swagger
+### Front-end (`frontend/`)
+
+| ด้าน | เทคโนโลยี | ใช้ทำอะไร |
+| --- | --- | --- |
+| Framework | Vue 2.6 | สร้างหน้าเว็บแบบ component |
+| Build tool | Vue CLI 5 (Webpack, Babel) | dev server แบบ hot-reload และ build production |
+| UI library | Vuetify 2.7 (Material Design) | ปุ่ม การ์ด ฟอร์ม ตาราง dialog และ grid |
+| Icons | Material Design Icons (`mdi-*`) | ไอคอนทั้งเว็บ |
+| Routing | Vue Router 3 (history mode) | แยกหน้า `/workshop-1`, `/workshop-2`, `/workshop-3/...` |
+| State | Vuex 3 | เก็บข้อมูลผู้ใช้ที่ล็อกอิน ตะกร้า และการแจ้งเตือน |
+| HTTP | Axios | เรียก API ของ Back-end (ใส่ JWT และจัดการ error ที่เดียว) |
+| Styling | SCSS (Sass) | สไตล์แยกตาม Workshop (`.w1`, `.w2`, `.w3`) |
+| Fonts | Kanit (หัวข้อ), IBM Plex Sans Thai (เนื้อหา) | ฟอนต์ภาษาไทยทั้งเว็บ |
+| Code quality | ESLint | ตรวจรูปแบบโค้ด |
+
+### Back-end (`backend/`)
+
+| ด้าน | เทคโนโลยี | ใช้ทำอะไร |
+| --- | --- | --- |
+| Runtime / Framework | Node.js, Express 4 | REST API |
+| Database | MongoDB + Mongoose 9 | เก็บผู้ใช้ สินค้า และออเดอร์ |
+| Auth | JWT (`jsonwebtoken`), bcrypt | เข้าสู่ระบบ และเข้ารหัสรหัสผ่าน |
+| อัปโหลดไฟล์ | multer | รูปสินค้าและรูปโปรไฟล์ |
+| API docs | Swagger UI | เอกสาร API แบบกดทดลองได้ |
+| อื่น ๆ | cors, dotenv, morgan, nodemon | CORS, ไฟล์ตั้งค่า `.env`, log, รีสตาร์ตอัตโนมัติ |
 
 ## Requirements
 
