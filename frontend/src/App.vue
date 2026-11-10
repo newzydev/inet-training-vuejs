@@ -30,8 +30,12 @@ html { scroll-behavior: smooth; }
   .rail-safe { padding-left: 76px !important; padding-right: 76px !important; }
 }
 
-/* มือถือ: แถบเลือกอยู่ล่างจอ จึงเว้นที่ด้านล่างไว้ไม่ให้ทับเนื้อหา */
+/* ฉากมืดหลัง drawer ต้องอยู่เหนือแถบเลือก Workshop ด้วย (drawer ตะกร้าใช้ z-index 210) */
+.v-navigation-drawer__scrim { z-index: 209 !important; }
+
+/* มือถือ: แถบเลือกอยู่ล่างจอ จึงเว้นที่ด้านล่างไว้ไม่ให้ทับเนื้อหา และยกแจ้งเตือน (snackbar) ขึ้นเหนือแถบ */
 @media (max-width: 600px) {
   .v-main { padding-bottom: 84px !important; }
+  .v-snack--bottom { bottom: 84px !important; }
 }
 </style>

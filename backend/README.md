@@ -155,8 +155,15 @@ Base URL: `http://localhost:3000/api/v1`
 |---|---|:---:|---|---|
 | POST | `/register` | ไม่ | ทุกคน | สมัครสมาชิก (แนบภาพโปรไฟล์ `avatar` ได้) |
 | POST | `/login` | ไม่ | ทุกคน | เข้าสู่ระบบ รับ token |
+| GET | `/users/me` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | ดูข้อมูลของตัวเอง |
+| PUT | `/users/me` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | แก้ชื่อ / เปลี่ยนรหัสผ่าน (ต้องส่ง `currentPassword` ด้วย) |
 | PUT | `/users/me/avatar` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | เปลี่ยนภาพโปรไฟล์ของตัวเอง |
+| GET | `/users` | ใช่ | **admin** | ดูรายชื่อผู้ใช้ทั้งหมด (ผู้ที่รออนุมัติขึ้นก่อน) |
+| GET | `/users/:id` | ใช่ | **admin** | ดูผู้ใช้ 1 คน |
 | PUT | `/users/:id/approve` | ใช่ | **admin** | อนุมัติผู้ใช้ |
+| PUT | `/users/:id/revoke` | ใช่ | **admin** | ระงับสิทธิ์ผู้ใช้ (กลับเป็นรออนุมัติ) ห้ามระงับตัวเอง/admin คนอื่น |
+| PUT | `/users/:id/role` | ใช่ | **admin** | เปลี่ยนบทบาท `admin` / `user` (ห้ามเปลี่ยนของตัวเอง) |
+| DELETE | `/users/:id` | ใช่ | **admin** | ลบผู้ใช้ (ใช้ปฏิเสธผู้สมัคร) ห้ามลบตัวเอง และห้ามลบคนที่เคยสั่งซื้อแล้ว |
 | GET | `/products` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | ดูสินค้าทั้งหมด |
 | POST | `/products` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | เพิ่มสินค้า (แนบภาพ `image` ได้) |
 | GET | `/products/:id` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | ดูสินค้า 1 รายการ |
@@ -165,6 +172,22 @@ Base URL: `http://localhost:3000/api/v1`
 | GET | `/products/:id/orders` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | ดู Order ทั้งหมดของสินค้า |
 | POST | `/products/:id/orders` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | เพิ่ม Order (ไม่เกินสต็อก) |
 | GET | `/orders` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | ดู Order ทุกรายการ |
+| GET | `/orders/me` | ใช่ | ผู้ใช้ที่อนุมัติแล้ว | ดู Order ของตัวเอง |
+| GET | `/orders/:id` | ใช่ | เจ้าของ Order หรือ **admin** | ดู Order 1 รายการ |
+| PUT | `/orders/:id/cancel` | ใช่ | เจ้าของ Order หรือ **admin** | ยกเลิก Order (ยังไม่จัดส่ง) และ **คืนสต็อก** |
+| PUT | `/orders/:id/status` | ใช่ | **admin** | เปลี่ยนสถานะ `pending → confirmed → shipped` หรือ `cancelled` |
+| GET | `/stats` | ใช่ | **admin** | สถิติภาพรวม: ผู้ใช้ สินค้า ออเดอร์ ยอดขาย 7 วัน สินค้าขายดี/ใกล้หมด ออเดอร์ล่าสุด |
+
+> `GET /orders` ยังเปิดให้ทุกคนที่อนุมัติแล้วเห็น Order ของทุกคน (เป็นไปตามโจทย์เดิม) ถ้าจะใช้งานจริงควรจำกัดเฉพาะ admin และให้สมาชิกใช้ `GET /orders/me` แทน
+
+### สถานะของ Order
+
+| สถานะ | ความหมาย | เปลี่ยนต่อได้เป็น |
+|---|---|---|
+| `pending` | รอยืนยัน (สถานะเริ่มต้น และ Order เก่าที่ไม่มีสถานะ) | `confirmed`, `cancelled` |
+| `confirmed` | ยืนยันแล้ว | `shipped`, `cancelled` |
+| `shipped` | จัดส่งแล้ว (สถานะสุดท้าย) | - |
+| `cancelled` | ยกเลิก (สถานะสุดท้าย) เมื่อยกเลิกจะคืนสต็อก 1 ครั้งเท่านั้น | - |
 
 > `:id` คือรหัส `_id` ของข้อมูลนั้นๆ (ข้อความ 24 ตัวอักษร) ที่ได้จากตอนสร้างหรือตอนดูรายการ
 
@@ -221,7 +244,8 @@ Base URL: `http://localhost:3000/api/v1`
 คัดลอก `data.token` ของ admin เก็บไว้
 
 ### ขั้นที่ 3: admin อนุมัติผู้ใช้
-`PUT /api/v1/users/<id ของ Somchai>/approve` (ใส่ token ของ admin)
+ดูรายชื่อผู้ใช้เพื่อหา `_id` ของผู้ที่รออนุมัติ: `GET /api/v1/users` (ใส่ token ของ admin)
+แล้วอนุมัติ: `PUT /api/v1/users/<id ของ Somchai>/approve` (ใส่ token ของ admin)
 ผลลัพธ์ `200` — `"approved"`
 
 ### ขั้นที่ 4: ผู้ใช้เข้าสู่ระบบ
@@ -309,9 +333,10 @@ inet-training-nodejs/
 │
 ├── routes/                 เส้นทาง API
 │   ├── auth.js               register, login
-│   ├── users.js              approve
+│   ├── users.js              โปรไฟล์ตัวเอง + จัดการผู้ใช้ (admin)
 │   ├── products.js           สินค้า + Order ของสินค้า
-│   └── orders.js             Order ทั้งหมด
+│   ├── orders.js             Order: ดู/ยกเลิก/เปลี่ยนสถานะ
+│   └── stats.js              สถิติภาพรวม (admin)
 │
 ├── middleware/auth.js      ตรวจ token และสิทธิ์ (auth, adminOnly)
 ├── utils/                  ตัวช่วย: รูปแบบ response, จัดการ error แบบ async, อัปโหลดรูป (upload.js)

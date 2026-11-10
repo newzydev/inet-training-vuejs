@@ -1,23 +1,16 @@
 <template>
-  <v-container class="page-wrap rail-safe">
-    <div class="d-flex align-center flex-wrap mb-6">
-      <div>
-        <h1 class="page-title">จัดการสินค้า</h1>
-        <p class="grey--text mb-0">เพิ่ม แก้ไข และลบสินค้าในร้าน</p>
-      </div>
-      <v-spacer />
-      <v-btn depressed color="primary" @click="openForm(null)"><v-icon left>mdi-plus</v-icon>เพิ่มสินค้า</v-btn>
-    </div>
-
+  <div>
     <v-alert v-if="error" type="error" text>
       {{ error }}
       <template v-slot:append><v-btn small text color="error" @click="load">ลองใหม่</v-btn></template>
     </v-alert>
 
     <v-card class="card pa-2">
-      <v-card-title class="pb-0">
-        <v-text-field v-model="search" placeholder="ค้นหาสินค้า..." prepend-inner-icon="mdi-magnify" hide-details outlined dense clearable class="search" />
-      </v-card-title>
+      <div class="bar">
+        <v-text-field v-model="search" placeholder="ค้นหาสินค้า..." prepend-inner-icon="mdi-magnify" hide-details outlined dense rounded clearable class="search" />
+        <v-spacer />
+        <v-btn depressed rounded color="primary" @click="openForm(null)"><v-icon left>mdi-plus</v-icon>เพิ่มสินค้า</v-btn>
+      </div>
 
       <!-- ตารางสินค้า -->
       <v-data-table
@@ -33,7 +26,7 @@
         </template>
         <template v-slot:[`item.name`]="{ item }">
           <div class="font-weight-medium">{{ item.name }}</div>
-          <div class="caption grey--text">{{ item.description }}</div>
+          <div class="caption grey--text desc">{{ item.description }}</div>
         </template>
         <template v-slot:[`item.price`]="{ item }">{{ item.price | baht }}</template>
         <template v-slot:[`item.stock`]="{ item }">
@@ -50,29 +43,20 @@
     <ProductFormDialog v-model="formOpen" :product="editing" @saved="onSaved" />
 
     <!-- ป๊อปอัปยืนยันการลบ -->
-    <v-dialog v-model="deleteOpen" max-width="400">
-      <v-card class="pa-2">
-        <v-card-title class="display-font">ลบสินค้านี้?</v-card-title>
-        <v-card-text>
-          ต้องการลบ <b>{{ toDelete && toDelete.name }}</b> ใช่หรือไม่ การลบไม่สามารถย้อนกลับได้
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn text :disabled="deleting" @click="deleteOpen = false">ยกเลิก</v-btn>
-          <v-btn depressed color="error" :loading="deleting" @click="remove">ลบสินค้า</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-container>
+    <ConfirmDialog v-model="deleteOpen" title="ลบสินค้านี้?" confirm-text="ลบสินค้า" :loading="deleting" @confirm="remove">
+      ต้องการลบ <b>{{ toDelete && toDelete.name }}</b> ใช่หรือไม่ การลบไม่สามารถย้อนกลับได้
+    </ConfirmDialog>
+  </div>
 </template>
 
 <script>
-import api from '../api'
-import ProductImage from '../components/ProductImage.vue'
-import ProductFormDialog from '../components/ProductFormDialog.vue'
+import api from '../../api'
+import ConfirmDialog from '../../components/ConfirmDialog.vue'
+import ProductImage from '../../components/ProductImage.vue'
+import ProductFormDialog from '../../components/ProductFormDialog.vue'
 
 export default {
-  components: { ProductImage, ProductFormDialog },
+  components: { ConfirmDialog, ProductImage, ProductFormDialog },
   data () {
     return {
       products: [],
@@ -138,6 +122,8 @@ export default {
 </script>
 
 <style scoped>
+.bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 14px 4px; }
+.search { max-width: 340px; }
 .thumb { width: 64px; border-radius: 12px; overflow: hidden; }
-.search { max-width: 360px; }
+.desc { max-width: 380px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>

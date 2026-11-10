@@ -22,6 +22,11 @@ export default {
       state.user = user
       try { localStorage.setItem(KEY, JSON.stringify({ token, user })) } catch (e) { /* ignore */ }
     },
+    // อัปเดตข้อมูลผู้ใช้ที่ login อยู่ (เช่น หลังแก้ชื่อ/เปลี่ยนรูปโปรไฟล์) โดยไม่ต้อง login ใหม่
+    updateUser (state, patch) {
+      state.user = { ...state.user, ...patch }
+      try { localStorage.setItem(KEY, JSON.stringify({ token: state.token, user: state.user })) } catch (e) { /* ignore */ }
+    },
     clearSession (state) {
       state.token = ''
       state.user = null

@@ -31,6 +31,7 @@ app.use('/api/v1', require('./routes/auth')); // register, login
 app.use('/api/v1/users', require('./routes/users')); // approve
 app.use('/api/v1/products', require('./routes/products')); // products + orders ของ product
 app.use('/api/v1/orders', require('./routes/orders')); // orders ทั้งหมด
+app.use('/api/v1/stats', require('./routes/stats')); // สถิติภาพรวม (admin)
 
 // ไม่เจอ route → ส่งต่อให้ error handler เป็น 404
 app.use((req, res, next) => next(createError(404, 'route not found')));

@@ -9,7 +9,8 @@ const store = new Vuex.Store({
   modules: { auth, cart },
   // ข้อความแจ้งเตือนมุมจอ (snackbar) ที่ทุกหน้าเรียกใช้ได้: this.$store.commit('notify', { text, color })
   state: {
-    notice: { show: false, text: '', color: 'success' }
+    notice: { show: false, text: '', color: 'success' },
+    cartOpen: false // เปิด/ปิดตะกร้าแบบ drawer ด้านขวา
   },
   mutations: {
     notify (state, { text, color = 'success' }) {
@@ -17,6 +18,9 @@ const store = new Vuex.Store({
     },
     closeNotice (state) {
       state.notice.show = false
+    },
+    setCartOpen (state, open) {
+      state.cartOpen = open
     }
   }
 })

@@ -46,6 +46,7 @@ const schemas = {
       avatar: { type: 'string', nullable: true, example: '/uploads/avatars/3f2a9c.png', description: 'ภาพโปรไฟล์ (เปิดดูที่ http://localhost:3000 + path นี้)' },
       role: { type: 'string', enum: ['admin', 'user'], example: 'user' },
       approved: { type: 'boolean', example: false },
+      createdAt: { type: 'string', format: 'date-time', description: 'วันที่สมัคร (มีเมื่อดูรายชื่อผู้ใช้ GET /users)' },
     },
   },
   Product: {
@@ -70,12 +71,26 @@ const schemas = {
       quantity: { type: 'integer', example: 3 },
       unitPrice: { type: 'number', example: 10 },
       totalPrice: { type: 'number', example: 30 },
+      status: { type: 'string', enum: ['pending', 'confirmed', 'shipped', 'cancelled'], example: 'pending', description: 'pending = รอยืนยัน, confirmed = ยืนยันแล้ว, shipped = จัดส่งแล้ว, cancelled = ยกเลิก' },
       createdAt: { type: 'string', format: 'date-time' },
+    },
+  },
+  Stats: {
+    type: 'object',
+    description: 'สถิติภาพรวมของร้าน (สำหรับหน้า Dashboard)',
+    properties: {
+      users: { type: 'object', properties: { total: { type: 'integer' }, pending: { type: 'integer', description: 'รออนุมัติ' }, admins: { type: 'integer' } } },
+      products: { type: 'object', properties: { total: { type: 'integer' }, outOfStock: { type: 'integer' }, lowStock: { type: 'integer', description: 'เหลือ 1-5 ชิ้น' }, inventoryValue: { type: 'number', description: 'มูลค่าสินค้าคงคลัง (ราคา x สต็อก)' }, units: { type: 'integer' } } },
+      orders: { type: 'object', properties: { total: { type: 'integer' }, revenue: { type: 'number', description: 'ยอดขายรวม (ไม่นับที่ยกเลิก)' }, byStatus: { type: 'object', description: 'จำนวนและยอดเงินแยกตามสถานะ' } } },
+      sales7d: { type: 'array', description: 'ยอดขายรายวัน 7 วันล่าสุด (ครบ 7 วันเสมอ)', items: { type: 'object', properties: { date: { type: 'string', example: '2026-11-10' }, count: { type: 'integer' }, amount: { type: 'number' } } } },
+      topProducts: { type: 'array', description: 'สินค้าขายดี 5 อันดับ', items: { type: 'object', properties: { _id: { type: 'string' }, name: { type: 'string' }, image: { type: 'string', nullable: true }, quantity: { type: 'integer' }, revenue: { type: 'number' } } } },
+      lowStock: { type: 'array', description: 'สินค้าที่เหลือ 5 ชิ้นหรือน้อยกว่า', items: ref('Product') },
+      recentOrders: { type: 'array', description: 'ออเดอร์ล่าสุด 6 รายการ', items: ref('Order') },
     },
   },
 };
 
-const ref = (name) => ({ $ref: `#/components/schemas/${name}` });
+function ref(name) { return { $ref: `#/components/schemas/${name}` }; }
 const list = (name) => ({ type: 'array', items: ref(name) });
 
 // ---------- Spec หลัก ----------
@@ -92,9 +107,10 @@ module.exports = {
   servers: [{ url: '/api/v1', description: 'Local' }],
   tags: [
     { name: 'Auth', description: 'สมัครสมาชิก / เข้าสู่ระบบ' },
-    { name: 'Users', description: 'อนุมัติผู้ใช้ (admin)' },
+    { name: 'Users', description: 'โปรไฟล์ของตัวเอง + จัดการผู้ใช้ (admin: อนุมัติ / ระงับ / เปลี่ยนบทบาท / ลบ)' },
     { name: 'Products', description: 'จัดการสินค้า' },
-    { name: 'Orders', description: 'สั่งซื้อ (ต้องไม่เกิน Stock)' },
+    { name: 'Orders', description: 'สั่งซื้อ (ต้องไม่เกิน Stock), ดูของตัวเอง, ยกเลิก (คืน Stock), เปลี่ยนสถานะ (admin)' },
+    { name: 'Stats', description: 'สถิติภาพรวมของร้าน (admin)' },
   ],
   components: {
     securitySchemes: { bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' } },
@@ -154,6 +170,15 @@ module.exports = {
           400: R400,
           401: R401,
         },
+      },
+    },
+    '/users': {
+      get: {
+        tags: ['Users'],
+        summary: 'แสดงรายชื่อผู้ใช้ทั้งหมด (เฉพาะ admin) — ใช้ดูผู้ที่รออนุมัติ',
+        description: 'เรียงให้ผู้ที่ **รออนุมัติ** ขึ้นก่อน แล้วเรียงตามวันที่สมัครล่าสุด (ไม่ส่ง password กลับ)',
+        security: secured,
+        responses: { 200: res('สำเร็จ (ไม่มีข้อมูล = [])', list('User')), 401: R401 },
       },
     },
     '/users/me/avatar': {
@@ -294,6 +319,114 @@ module.exports = {
           properties: { quantity: { type: 'integer', minimum: 1, example: 3 } },
         }),
         responses: { 201: res('บันทึก Order สำเร็จ (Stock ลดลง)', ref('Order')), 400: R400, 401: R401 },
+      },
+    },
+    '/users/me': {
+      get: {
+        tags: ['Users'],
+        summary: 'ดูข้อมูลของตัวเอง',
+        security: secured,
+        responses: { 200: res('สำเร็จ', ref('User')), 401: R401 },
+      },
+      put: {
+        tags: ['Users'],
+        summary: 'แก้ชื่อ / เปลี่ยนรหัสผ่านของตัวเอง',
+        description: 'ส่งอย่างน้อย `name` หรือ `newPassword` — การเปลี่ยนรหัสผ่านต้องส่ง `currentPassword` (รหัสเดิม) มาด้วย',
+        security: secured,
+        requestBody: json({
+          type: 'object',
+          properties: {
+            name: { type: 'string', example: 'Somchai S.' },
+            currentPassword: { type: 'string', example: '1234' },
+            newPassword: { type: 'string', minLength: 4, example: '5678' },
+          },
+        }),
+        responses: { 200: res('แก้ไขสำเร็จ', ref('User')), 400: R400, 401: R401 },
+      },
+    },
+    '/users/{id}': {
+      get: {
+        tags: ['Users'],
+        summary: 'ดูผู้ใช้ 1 คน (เฉพาะ admin)',
+        security: secured,
+        parameters: idParam('id ของผู้ใช้'),
+        responses: { 200: res('สำเร็จ', ref('User')), 400: R400, 401: R401 },
+      },
+      delete: {
+        tags: ['Users'],
+        summary: 'ลบผู้ใช้ — ใช้ปฏิเสธผู้สมัคร (เฉพาะ admin)',
+        description: 'ห้ามลบตัวเอง และห้ามลบผู้ใช้ที่เคยสั่งซื้อแล้ว (ให้ใช้ระงับสิทธิ์ `revoke` แทน)',
+        security: secured,
+        parameters: idParam('id ของผู้ใช้'),
+        responses: { 200: res('ลบแล้ว', ref('User')), 400: R400, 401: R401 },
+      },
+    },
+    '/users/{id}/revoke': {
+      put: {
+        tags: ['Users'],
+        summary: 'ระงับสิทธิ์ผู้ใช้ (เฉพาะ admin)',
+        description: 'ผู้ใช้จะกลับเป็น "รออนุมัติ" และเข้าสู่ระบบไม่ได้จนกว่าจะอนุมัติใหม่ ห้ามระงับตัวเองหรือ admin คนอื่น',
+        security: secured,
+        parameters: idParam('id ของผู้ใช้'),
+        responses: { 200: res('ระงับแล้ว', ref('User')), 400: R400, 401: R401 },
+      },
+    },
+    '/users/{id}/role': {
+      put: {
+        tags: ['Users'],
+        summary: 'เปลี่ยนบทบาทผู้ใช้ (เฉพาะ admin)',
+        description: 'ห้ามเปลี่ยนบทบาทของตัวเอง',
+        security: secured,
+        parameters: idParam('id ของผู้ใช้'),
+        requestBody: json({ type: 'object', required: ['role'], properties: { role: { type: 'string', enum: ['admin', 'user'], example: 'admin' } } }),
+        responses: { 200: res('เปลี่ยนแล้ว', ref('User')), 400: R400, 401: R401 },
+      },
+    },
+    '/orders/me': {
+      get: {
+        tags: ['Orders'],
+        summary: 'แสดง Order ของตัวเอง',
+        security: secured,
+        responses: { 200: res('สำเร็จ (ไม่มีข้อมูล = [])', list('Order')), 401: R401 },
+      },
+    },
+    '/orders/{id}': {
+      get: {
+        tags: ['Orders'],
+        summary: 'ดู Order 1 รายการ (เจ้าของหรือ admin)',
+        security: secured,
+        parameters: idParam('id ของ Order'),
+        responses: { 200: res('สำเร็จ', ref('Order')), 400: R400, 401: R401 },
+      },
+    },
+    '/orders/{id}/cancel': {
+      put: {
+        tags: ['Orders'],
+        summary: 'ยกเลิก Order (เจ้าของหรือ admin) — คืน Stock ให้สินค้า',
+        description: 'ยกเลิกได้เฉพาะสถานะ `pending` และ `confirmed` (ที่จัดส่งแล้วหรือยกเลิกไปแล้วทำซ้ำไม่ได้)',
+        security: secured,
+        parameters: idParam('id ของ Order'),
+        responses: { 200: res('ยกเลิกแล้ว (Stock ถูกคืน)', ref('Order')), 400: R400, 401: R401 },
+      },
+    },
+    '/orders/{id}/status': {
+      put: {
+        tags: ['Orders'],
+        summary: 'เปลี่ยนสถานะ Order (เฉพาะ admin)',
+        description: 'เปลี่ยนได้ตามลำดับ: `pending` → `confirmed` → `shipped` หรือยกเลิก `cancelled` ได้จนกว่าจะจัดส่ง (ยกเลิกจะคืน Stock)',
+        security: secured,
+        parameters: idParam('id ของ Order'),
+        requestBody: json({ type: 'object', required: ['status'], properties: { status: { type: 'string', enum: ['confirmed', 'shipped', 'cancelled'], example: 'confirmed' } } }),
+        responses: { 200: res('เปลี่ยนแล้ว', ref('Order')), 400: R400, 401: R401 },
+      },
+    },
+    '/stats': {
+      get: {
+        tags: ['Stats'],
+        summary: 'สถิติภาพรวมของร้าน (เฉพาะ admin)',
+        description: 'ผู้ใช้ สินค้า ออเดอร์ ยอดขาย 7 วันล่าสุด สินค้าขายดี สินค้าใกล้หมด และออเดอร์ล่าสุด',
+        security: secured,
+        responses: { 200: res('สำเร็จ', ref('Stats')), 401: R401 },
       },
     },
     '/orders': {
