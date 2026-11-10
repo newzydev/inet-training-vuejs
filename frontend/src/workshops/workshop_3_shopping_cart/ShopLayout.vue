@@ -160,7 +160,7 @@ export default {
   .user-btn::before, .user-btn.v-btn--active::before { opacity: 0 !important; }
 
   /* ---------- ส่วนที่ใช้ร่วมกันหลายหน้า ---------- */
-  .page-wrap { max-width: 1180px; padding-top: 36px; padding-bottom: 72px; }
+  .page-wrap { padding-top: 36px; padding-bottom: 72px; }
   .page-title { font-size: 2rem; font-weight: 600; color: #1e1b4b; line-height: 1.25; }
   .page-sub { color: #6b7280; }
   .card {

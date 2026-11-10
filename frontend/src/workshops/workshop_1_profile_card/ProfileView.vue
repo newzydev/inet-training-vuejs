@@ -358,7 +358,6 @@ export default {
 /* ---------- Section ---------- */
 .section { padding: 88px 0; scroll-margin-top: 68px; }
 .section.alt { background: #f5f3ff; }
-.section .container { max-width: 1100px; }
 
 /* ---------- Card ---------- */
 .card {

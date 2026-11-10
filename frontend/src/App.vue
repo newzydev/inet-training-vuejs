@@ -53,9 +53,16 @@ body .v-application [class*='text-caption'], body .v-application [class*='text-o
 .v-application.theme--light { background: #f4f2fc !important; }
 html { scroll-behavior: smooth; }
 
+/* ความกว้างเนื้อหากลาง: กำหนดที่เดียว ใช้กับ navbar, hero และเนื้อหาของทุก Workshop ให้ขอบซ้าย-ขวาตรงกัน
+   (ชนะค่า max-width ตามขนาดจอของ Vuetify) และตัด padding ของ navbar ออก ให้โลโก้ตรงกับขอบเนื้อหา */
+:root { --page-width: 1180px; }
+body .v-application .container { max-width: var(--page-width); }
+body .v-application .v-toolbar__content { padding-left: 0; padding-right: 0; }
+
 /* จอกลาง (601-1311px): เว้นระยะซ้าย-ขวาของเนื้อหา ไม่ให้แถบเลือก Workshop ทับ (ใส่คลาส rail-safe ที่ container) */
 @media (min-width: 601px) and (max-width: 1311px) {
-  .rail-safe { padding-left: 76px !important; padding-right: 76px !important; }
+  .rail-safe,
+  body .v-application .container { padding-left: 76px !important; padding-right: 76px !important; }
 }
 
 /* ฉากมืดหลัง drawer ต้องอยู่เหนือแถบเลือก Workshop ด้วย (drawer ตะกร้าใช้ z-index 210) */

@@ -171,7 +171,7 @@ export default {
 
 /* ---------- ส่วนหัว ---------- */
 /* padding 16px = เท่ากับ padding ของ v-app-bar ใน Workshop 1 และ 3 เพื่อให้โลโก้อยู่ตำแหน่งซ้ายเดียวกัน */
-.topbar { position: absolute; top: 0; left: 0; right: 0; height: 68px; padding: 0 16px; display: flex; align-items: center; text-align: left; }
+.topbar { position: absolute; top: 0; left: 0; right: 0; height: 68px; padding: 0; display: flex; align-items: center; text-align: left; }
 .hero {
   position: relative;
   text-align: center;
@@ -186,7 +186,7 @@ export default {
 .hero-sub { opacity: 0.85; margin: 6px 0 0; font-size: 1.05rem; }
 
 /* ---------- เนื้อหา ---------- */
-.content { max-width: 1000px; margin-top: -72px; position: relative; }
+.content { margin-top: -72px; position: relative; }
 .card {
   border-radius: 20px !important;
   border: 1px solid #e5e7eb !important;
