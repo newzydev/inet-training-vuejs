@@ -1,8 +1,7 @@
 # inet-training-vuejs
 
 Workshop ของการอบรม Vue.js (INET Training) จำนวน 3 งาน รวมอยู่ในแอปเดียว มีปุ่มเลือก Workshop ด้านซ้ายของหน้าจอ
-อ้างอิงเอกสาร [docs/VueJsTraining.pdf](docs/VueJsTraining.pdf) โปรเจ็กต์ตัวอย่างประกอบการสอนอยู่ที่ `inet-training-exvuejs`
-
+อ้างอิงเอกสาร [docs/VueJsTraining.pdf](docs/VueJsTraining.pdf)
 ## Workshops
 
 | # | ชื่อ | Route | โจทย์ | โค้ดและคำอธิบาย |
