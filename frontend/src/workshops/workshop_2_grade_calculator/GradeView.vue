@@ -1,11 +1,14 @@
 <template>
-  <div class="w2">
+  <div id="top" class="w2">
       <!-- ================= ส่วนหัว ================= -->
       <header class="hero">
         <!-- แถบบนสุด: โลโก้ตำแหน่งเดียวกับ Workshop 1 และ 3 (container เดียวกัน สูง 68px) -->
-        <div class="topbar">
+        <div class="topbar" :class="{ scrolled: scrolled }">
           <v-container class="d-flex align-center py-0">
-            <BrandLogo suffix="grade" />
+            <BrandLogo suffix="grade" href="#top" :dark="scrolled" />
+            <v-spacer />
+            <!-- เมนู: กดแล้วเลื่อนไปยังส่วนนั้น (active ตามตำแหน่งที่เลื่อนอยู่) -->
+            <a v-for="m in menu" :key="m.id" :href="'#' + m.id" class="nav-link" :class="{ active: current === m.id }">{{ m.title }}</a>
           </v-container>
         </div>
         <v-icon size="44" color="white" class="mb-3">mdi-school</v-icon>
@@ -75,6 +78,24 @@
         </v-row>
       </v-container>
 
+      <!-- ================= เกี่ยวกับ ================= -->
+      <v-container id="about" class="about">
+        <h2 class="about-title">เกี่ยวกับโปรแกรมนี้</h2>
+        <p class="about-text">
+          นิว.grade คือโปรแกรมตัดเกรดจากคะแนน 0 - 100 สร้างเป็น Workshop 2 ของการอบรม Vue.js ที่ INET
+          เพื่อฝึกใช้ <b>v-model</b>, <b>computed</b>, <b>props</b> และการตรวจสอบข้อมูลที่ผู้ใช้กรอก
+        </p>
+        <v-row>
+          <v-col v-for="f in features" :key="f.title" cols="12" sm="4">
+            <v-card class="card pa-6 about-card" outlined height="100%">
+              <v-icon color="primary" size="30" class="mb-3">{{ f.icon }}</v-icon>
+              <div class="about-card-title">{{ f.title }}</div>
+              <div class="about-card-text">{{ f.text }}</div>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+
     <!-- แจ้งเตือนแบบป๊อปอัป เมื่อกรอกข้อมูลไม่ถูกต้อง -->
     <v-snackbar v-model="showAlert" color="error" top timeout="3500">
       <v-icon left color="white">mdi-alert-circle</v-icon>{{ errorMessage }}
@@ -100,6 +121,17 @@ export default {
       grade: '', // เกรดที่ได้ ('' = ยังไม่คำนวณ)
       errorMessage: '', // ข้อความแจ้งเตือน
       showAlert: false, // เปิด/ปิด snackbar
+      scrolled: false, // เลื่อนลงแล้ว = แถบบนเปลี่ยนเป็นพื้นขาว
+      current: 'top', // เมนูที่ active ตามตำแหน่งการเลื่อน
+      menu: [
+        { id: 'top', title: 'ตัดเกรด' },
+        { id: 'about', title: 'เกี่ยวกับ' }
+      ],
+      features: [
+        { icon: 'mdi-calculator-variant-outline', title: 'ตัดเกรดทันที', text: 'กรอกคะแนนแล้วกด Enter หรือปุ่มตัดเกรด รองรับทศนิยม เช่น 79.5' },
+        { icon: 'mdi-shield-check-outline', title: 'ตรวจสอบข้อมูล', text: 'รับเฉพาะตัวเลขในช่วง 0 - 100 พร้อมแจ้งเตือนเมื่อกรอกไม่ถูกต้อง' },
+        { icon: 'mdi-table-check', title: 'เกณฑ์ชัดเจน', text: 'แสดงเกณฑ์ A - F และไฮไลต์เกรดที่ได้ให้เห็นทันที' }
+      ],
       // เกณฑ์เกรดจากโจทย์ เรียงจากสูงไปต่ำ
       gradeScale: [
         { grade: 'A', min: 80, max: 100, color: '#16a34a', message: 'ยอดเยี่ยมมาก!' },
@@ -119,7 +151,22 @@ export default {
     }
   },
 
+  mounted () {
+    window.addEventListener('scroll', this.onScroll, { passive: true })
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.onScroll)
+  },
+
   methods: {
+    // เลื่อนหน้าจอ: ถ้าส่วน "เกี่ยวกับ" ขึ้นมาถึงเส้นกลางจอให้ active เมนูเกี่ยวกับ
+    onScroll () {
+      this.scrolled = window.scrollY > 40
+      const about = document.getElementById('about')
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4
+      this.current = about && (about.getBoundingClientRect().top < window.innerHeight * 0.5 || atBottom) ? 'about' : 'top'
+    },
+
     // กดปุ่ม "ตัดเกรด"
     calculate () {
       const text = String(this.score || '').trim()
@@ -171,7 +218,9 @@ export default {
 
 /* ---------- ส่วนหัว ---------- */
 /* padding 16px = เท่ากับ padding ของ v-app-bar ใน Workshop 1 และ 3 เพื่อให้โลโก้อยู่ตำแหน่งซ้ายเดียวกัน */
-.topbar { position: absolute; top: 0; left: 0; right: 0; height: 68px; padding: 0; display: flex; align-items: center; text-align: left; }
+.topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 5; height: 68px; padding: 0; display: flex; align-items: center; text-align: left; transition: background 0.25s ease, box-shadow 0.25s ease; }
+/* เลื่อนลงแล้ว: แถบบนเป็นกระจกฝ้าสีขาว เหมือน Workshop 1 และ 3 */
+.topbar.scrolled { background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 6px 24px -16px rgba(30, 27, 110, 0.5); }
 .hero {
   position: relative;
   text-align: center;
@@ -182,6 +231,13 @@ export default {
     radial-gradient(circle at 85% 15%, rgba(6, 182, 212, 0.4), transparent 40%),
     linear-gradient(135deg, #1e1b6e 0%, #4f46e5 55%, #7c3aed 100%);
 }
+/* ---------- เกี่ยวกับ ---------- */
+.about { padding-top: 72px; padding-bottom: 72px; scroll-margin-top: 16px; }
+.about-title { font-size: 1.8rem; font-weight: 600; color: #1e1b4b; margin-bottom: 10px; }
+.about-text { color: #6b7280; max-width: 720px; margin-bottom: 20px; }
+.about-card-title { font-weight: 600; font-size: 1.1rem; color: #1e1b4b; margin-bottom: 6px; }
+.about-card-text { color: #6b7280; font-size: 0.92rem; }
+
 .hero-title { font-size: 2.6rem; font-weight: 600; }
 .hero-sub { opacity: 0.85; margin: 6px 0 0; font-size: 1.05rem; }
 
@@ -268,4 +324,21 @@ export default {
   .hero-title { font-size: 2rem; }
 }
 }
+
+/* ลิงก์เมนู (อยู่นอกบล็อก .w2 เพื่อให้ selector นำหน้าด้วย body .v-application ชนะสีลิงก์ของ Vuetify)
+   ปกติ = ตัวอักษรขาวบนพื้นไล่สี / เลื่อนลงแล้ว (.scrolled) = ตัวอักษรเข้มบนแถบขาว */
+body .v-application .w2 .nav-link {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 18px;
+  margin-left: 6px;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+body .v-application .w2 .nav-link:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
+body .v-application .w2 .nav-link.active { background: rgba(255, 255, 255, 0.24); color: #fff; }
+body .v-application .w2 .topbar.scrolled .nav-link { color: #4b5563; }
+body .v-application .w2 .topbar.scrolled .nav-link:hover { background: #f1f0ff; color: #4f46e5; }
+body .v-application .w2 .topbar.scrolled .nav-link.active { background: #eef2ff; color: #4f46e5; }
 </style>
