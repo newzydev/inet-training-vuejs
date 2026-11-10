@@ -1,9 +1,9 @@
 <template>
   <div class="w3">
     <!-- ================= แถบเมนูด้านบน (ไม่แสดงในหน้า login) ================= -->
-    <v-app-bar v-if="!isLogin" app height="72" elevate-on-scroll class="topbar">
+    <v-app-bar v-if="!isLogin" app height="68" elevate-on-scroll class="topbar">
       <v-container class="d-flex align-center py-0">
-        <router-link to="/workshop-3" class="brand">นิว<span>.shop</span></router-link>
+        <BrandLogo suffix="shop" to="/workshop-3" dark />
 
         <!-- เมนูหลัก (จอใหญ่): v-for จากข้อมูล links -->
         <div class="d-none d-md-flex ml-8 nav">
@@ -85,10 +85,11 @@
 import { mapGetters, mapState } from 'vuex'
 import { imageUrl } from './api'
 import CartDrawer from './components/CartDrawer.vue'
+import BrandLogo from '@/shell/BrandLogo.vue'
 import ProfileDialog from './components/ProfileDialog.vue'
 
 export default {
-  components: { CartDrawer, ProfileDialog },
+  components: { CartDrawer, ProfileDialog, BrandLogo },
   data () {
     return { profileOpen: false }
   },
@@ -128,7 +129,6 @@ export default {
 /* ทุกสไตล์อยู่ใต้ .w3 เพื่อไม่ชนกับ Workshop อื่นในแอปเดียวกัน */
 .w3 {
   /* ฟอนต์หัวข้อ = Kanit (ฟอนต์เนื้อหาตั้งไว้ส่วนกลางใน App.vue) */
-  .brand,
   .page-title,
   .price,
   .display-font {
@@ -142,13 +142,6 @@ export default {
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(99, 102, 241, 0.1) !important;
   }
-  .v-application & a.brand {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #1e1b4b;
-    text-decoration: none;
-  }
-  .v-application & a.brand span { color: #ec4899; }
   .nav-btn { font-weight: 500; letter-spacing: 0; }
   /* เมนูที่เปิดอยู่: พื้นสีม่วงอ่อน ตัวอักษรสีหลัก */
   .nav-btn.v-btn--active { background: #eef2ff; color: #4f46e5 !important; }

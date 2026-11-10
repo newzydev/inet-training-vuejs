@@ -2,14 +2,16 @@
   <div class="w1">
     <!-- ================= Navbar ================= -->
     <!-- scrolled = true เมื่อเลื่อนหน้าลง -> navbar เปลี่ยนเป็นพื้นขาว -->
-    <v-app-bar app :flat="!scrolled" :color="scrolled ? 'white' : 'transparent'" :dark="!scrolled" height="68">
+    <v-app-bar app :flat="!scrolled" :color="scrolled ? 'white' : 'transparent'" :dark="!scrolled" height="68" class="nav-bar" :class="{ scrolled: scrolled }">
       <v-container class="d-flex align-center py-0">
-        <a href="#home" class="brand" :class="{ dark: scrolled }">{{ profile.nickname }}<span>.dev</span></a>
+        <!-- โลโก้ใช้คอมโพเนนต์กลาง (หน้าตาเหมือนทุก Workshop): พื้นขาวหลังเลื่อนหน้า -> ใช้ตัวอักษรเข้ม -->
+        <BrandLogo :name="profile.nickname" suffix="dev" href="#home" :dark="scrolled" />
         <v-spacer />
 
         <!-- เมนูบนจอใหญ่ : v-for วนจากข้อมูล menus -->
         <div class="d-none d-md-flex">
-          <v-btn v-for="m in menus" :key="m.href" text :href="m.href">{{ m.title }}</v-btn>
+          <!-- active = หัวข้อที่กำลังดูอยู่ (scroll-spy: คำนวณใน onScroll) -->
+          <v-btn v-for="m in menus" :key="m.href" text rounded :href="m.href" class="nav-link" :class="{ active: active === m.href }">{{ m.title }}</v-btn>
         </div>
 
         <!-- เมนูบนมือถือ -->
@@ -18,7 +20,7 @@
             <v-btn icon class="d-md-none" v-on="on"><v-icon>mdi-menu</v-icon></v-btn>
           </template>
           <v-list>
-            <v-list-item v-for="m in menus" :key="m.href" :href="m.href">
+            <v-list-item v-for="m in menus" :key="m.href" :href="m.href" :class="{ 'active-item': active === m.href }">
               <v-list-item-title>{{ m.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -175,14 +177,16 @@
 
 <script>
 import SectionTitle from './components/SectionTitle.vue'
+import BrandLogo from '@/shell/BrandLogo.vue'
 
 export default {
-  components: { SectionTitle },
+  components: { SectionTitle, BrandLogo },
 
   // data() = ตัวแปรของหน้านี้ ข้อมูลทั้งหมดมาจากเรซูเม่ แก้ตรงนี้ที่เดียวหน้าเว็บอัปเดตเอง
   data () {
     return {
       scrolled: false, // เลื่อนหน้าลงหรือยัง (ใช้เปลี่ยนสี navbar)
+      active: '', // หัวข้อที่กำลังดูอยู่ เช่น '#about' (ใช้ไฮไลต์เมนู; '' = ยังอยู่ที่ Hero ด้านบนสุด)
       profile: {
         name: 'ศักดา สุขขวัญ',
         nameEn: 'Sakdar Sukkwan',
@@ -270,7 +274,8 @@ export default {
 
   // lifecycle : ผูก/ยกเลิกการฟังเหตุการณ์เลื่อนหน้าจอ
   mounted () {
-    window.addEventListener('scroll', this.onScroll)
+    window.addEventListener('scroll', this.onScroll, { passive: true })
+    this.onScroll() // คำนวณสถานะเริ่มต้นทันที (เผื่อเปิดหน้ามากลางหน้า เช่น ลิงก์ #skills)
   },
   beforeDestroy () {
     window.removeEventListener('scroll', this.onScroll)
@@ -278,6 +283,18 @@ export default {
   methods: {
     onScroll () {
       this.scrolled = window.scrollY > 40
+
+      // scroll-spy: หัวข้อสุดท้ายที่เลื่อนผ่านเส้นอ้างอิง (ใต้ navbar ลงมา 140px) คือหัวข้อที่กำลังดูอยู่
+      let current = ''
+      for (const m of this.menus) {
+        const el = document.querySelector(m.href)
+        if (el && el.getBoundingClientRect().top <= 140) current = m.href
+      }
+      // เลื่อนจนสุดหน้า: ถือว่าอยู่หัวข้อสุดท้าย (หัวข้อท้ายสุดอาจสูงไม่พอให้ผ่านเส้นอ้างอิง)
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        current = this.menus[this.menus.length - 1].href
+      }
+      this.active = current
     }
   }
 }
@@ -287,7 +304,6 @@ export default {
 /* ทุกสไตล์อยู่ใต้ .w1 เพื่อไม่ชนกับ Workshop อื่นในแอปเดียวกัน */
 .w1 {
 /* ฟอนต์เนื้อหา = IBM Plex Sans Thai / ฟอนต์หัวข้อ = Kanit  และเลื่อนหน้าแบบนุ่มนวลเมื่อกดเมนู */
-.brand,
 .hero-name,
 .hero-role,
 .stat-num,
@@ -297,16 +313,14 @@ export default {
   font-family: var(--font-heading) !important;
 }
 
-/* ---------- Navbar ---------- */
-/* .v-application & a.brand = .v-application .w1 a.brand : ความเฉพาะเจาะจงสูงพอจะชนะสีลิงก์เริ่มต้นของ Vuetify */
-.v-application & a.brand {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #fff;
-  text-decoration: none;
-}
-.v-application & a.brand span { color: #f472b6; }
-.v-application & a.brand.dark { color: #1e1b4b; }
+/* ---------- Navbar: เมนูที่ตรงกับหัวข้อที่กำลังดูอยู่ (scroll-spy) ---------- */
+.nav-link { font-weight: 500; letter-spacing: 0; }
+.nav-link::before { transition: opacity 0.2s ease; }
+/* navbar โปร่งใสบนพื้นไล่สี: เมนู active = เม็ดยาสีขาวโปร่ง */
+.nav-link.active { background: rgba(255, 255, 255, 0.22); }
+.nav-link.active::before { opacity: 0; }
+/* หลังเลื่อนหน้า navbar เป็นพื้นขาว: เมนู active = เม็ดยาสีม่วงอ่อน ตัวอักษรสีหลัก */
+.nav-bar.scrolled .nav-link.active { background: #eef2ff; color: #4f46e5 !important; }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -375,4 +389,10 @@ export default {
   .stats { gap: 24px; }
 }
 }
+</style>
+
+<style scoped>
+/* รายการเมนูบนมือถือที่ตรงกับหัวข้อที่กำลังดูอยู่ (v-menu ถูกย้ายออกนอก .w1 จึงใช้ scoped) */
+.active-item { background: #eef2ff; }
+.active-item .v-list-item__title { color: #4f46e5; font-weight: 600; }
 </style>

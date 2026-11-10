@@ -2,8 +2,12 @@
   <div class="w2">
       <!-- ================= ส่วนหัว ================= -->
       <header class="hero">
-        <!-- ชื่อแบรนด์มุมซ้ายบน -->
-        <div class="brand">นิว<span>.grade</span></div>
+        <!-- แถบบนสุด: โลโก้ตำแหน่งเดียวกับ Workshop 1 และ 3 (container เดียวกัน สูง 68px) -->
+        <div class="topbar">
+          <v-container class="d-flex align-center py-0">
+            <BrandLogo suffix="grade" />
+          </v-container>
+        </div>
         <v-icon size="44" color="white" class="mb-3">mdi-school</v-icon>
         <h1 class="hero-title">โปรแกรมตัดเกรด</h1>
         <p class="hero-sub">กรอกคะแนน 0 - 100 แล้วกดปุ่มเพื่อดูเกรดที่ได้</p>
@@ -83,9 +87,10 @@
 
 <script>
 import GradeScale from './components/GradeScale.vue'
+import BrandLogo from '@/shell/BrandLogo.vue'
 
 export default {
-  components: { GradeScale },
+  components: { GradeScale, BrandLogo },
 
   // data() = ตัวแปรของหน้านี้
   data () {
@@ -165,20 +170,13 @@ export default {
 }
 
 /* ---------- ส่วนหัว ---------- */
-.brand {
-  position: absolute;
-  top: 24px;
-  left: 32px;
-  font-family: var(--font-heading) !important;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-.brand span { color: #f9a8d4; }
+/* padding 16px = เท่ากับ padding ของ v-app-bar ใน Workshop 1 และ 3 เพื่อให้โลโก้อยู่ตำแหน่งซ้ายเดียวกัน */
+.topbar { position: absolute; top: 0; left: 0; right: 0; height: 68px; padding: 0 16px; display: flex; align-items: center; text-align: left; }
 .hero {
   position: relative;
   text-align: center;
   color: #fff;
-  padding: 72px 16px 120px;
+  padding: 92px 16px 120px;
   background:
     radial-gradient(circle at 15% 20%, rgba(236, 72, 153, 0.5), transparent 40%),
     radial-gradient(circle at 85% 15%, rgba(6, 182, 212, 0.4), transparent 40%),
