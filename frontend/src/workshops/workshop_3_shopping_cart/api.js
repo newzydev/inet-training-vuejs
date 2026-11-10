@@ -1,6 +1,6 @@
 // ตัวเรียก API กลาง: ตั้ง base URL, แนบ token ให้ทุก request และแปลง error เป็นข้อความภาษาไทย
 import axios from 'axios'
-import store from './store'
+import store from '@/store'
 import router from '@/router'
 
 // ที่อยู่ backend (ตั้งผ่าน VUE_APP_API_URL ในไฟล์ .env ได้)

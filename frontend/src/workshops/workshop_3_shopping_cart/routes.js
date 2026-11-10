@@ -1,7 +1,7 @@
 // เส้นทางของ Workshop 3 (ทุกหน้าอยู่ใต้ /workshop-3)
 // ShopLayout = โครงหน้า (แถบเมนู ตะกร้า แจ้งเตือน) ส่วน children คือหน้าต่าง ๆ ที่แสดงแทน <router-view />
 import ShopLayout from './ShopLayout.vue'
-import store from './store'
+import store from '@/store'
 
 const admin = { auth: true, admin: true } // meta ของหน้าที่ต้อง login และเป็น admin
 

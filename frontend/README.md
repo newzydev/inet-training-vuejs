@@ -32,13 +32,16 @@ src/
 ├── App.vue                 โครงรวม: แถบเลือก Workshop + <router-view />
 ├── router/index.js         เส้นทางทั้งหมด (รวม route ของ Workshop 3)
 ├── plugins/vuetify.js      ธีม + ภาษาไทย
-├── shell/WorkshopRail.vue  แถบเลือก Workshop ด้านซ้าย
-├── shell/AppField.vue      ช่องกรอกมาตรฐาน (label อยู่ด้านบน) ใช้ครอบ v-text-field ทุกที่
+├── store/                  Vuex store: auth (ผู้ใช้), cart (ตะกร้า), index.js (แจ้งเตือน + drawer) ที่ Workshop 3 ใช้
+├── components/             คอมโพเนนต์ส่วนกลางที่ใช้ร่วมกันหลาย Workshop
+│   ├── WorkshopRail.vue    แถบเลือก Workshop ด้านซ้าย
+│   ├── AppField.vue        ช่องกรอกมาตรฐาน (label อยู่ด้านบน) ใช้ครอบ v-text-field ทุกที่
+│   └── BrandLogo.vue       โลโก้ "นิว.xxx" ที่ใช้ทุก Workshop
 └── workshops/
     ├── index.js            รายการ Workshop (ใช้ทำปุ่มเลือก)
     ├── workshop_1_profile_card/      ProfileView.vue + README.md
     ├── workshop_2_grade_calculator/  GradeView.vue + README.md
-    └── workshop_3_shopping_cart/     ShopLayout.vue, routes.js, views/, store/ ... + README.md
+    └── workshop_3_shopping_cart/     ShopLayout.vue, routes.js, views/, components/ ... + README.md
 ```
 
 ## เพิ่ม Workshop ใหม่

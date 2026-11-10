@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './workshops/workshop_3_shopping_cart/store' // store ของ Workshop 3 (ผู้ใช้ + ตะกร้า)
+import store from './store' // Vuex store (ผู้ใช้ + ตะกร้าของ Workshop 3)
 import vuetify from './plugins/vuetify'
 import { baht, dateTime } from './workshops/workshop_3_shopping_cart/utils/format'
 

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import WorkshopRail from '@/shell/WorkshopRail.vue'
+import WorkshopRail from '@/components/WorkshopRail.vue'
 
 export default {
   components: { WorkshopRail }

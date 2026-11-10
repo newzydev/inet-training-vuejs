@@ -8,7 +8,7 @@
         <v-alert v-if="error" type="error" text dense>{{ error }}</v-alert>
 
         <v-form ref="form" @submit.prevent="save">
-          <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/shell) -->
+          <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/components) -->
           <AppField label="ชื่อสินค้า" field-id="p-name" required>
             <v-text-field id="p-name" v-model="form.name" outlined placeholder="เช่น หูฟังไร้สาย" :rules="[v => !!v || 'กรุณากรอกชื่อสินค้า']" />
           </AppField>
@@ -57,7 +57,7 @@
 
 <script>
 import api, { imageUrl } from '../api'
-import AppField from '@/shell/AppField.vue'
+import AppField from '@/components/AppField.vue'
 
 const empty = () => ({ name: '', description: '', price: '', stock: '' })
 

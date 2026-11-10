@@ -77,8 +77,7 @@ Workshop นี้ต้องมี MongoDB (พอร์ต 27017) และ B
 workshop_3_shopping_cart/
 ├── ShopLayout.vue          โครงหน้า: แถบเมนู (กระจกฝ้า) + ตะกร้า drawer + โปรไฟล์ + แจ้งเตือน (ครอบด้วยคลาส .w3)
 ├── routes.js               เส้นทางใต้ /workshop-3 + ด่านตรวจสิทธิ์ (guest / login / admin)
-├── api.js                  axios กลาง (แนบ token, แปลง error เป็นไทย, imageUrl)
-├── store/                  auth.js (ผู้ใช้), cart.js (ตะกร้า), index.js (แจ้งเตือน + เปิด/ปิด drawer)
+├── api.js                  axios กลาง (แนบ token, แปลง error เป็นไทย, imageUrl)  (store อยู่ที่ src/store/)
 ├── utils/                  format.js (ราคา/วันที่), status.js (สถานะออเดอร์), checkout.js (สั่งซื้อ/รีเฟรชตะกร้า)
 ├── components/             ProductCard, ProductImage, QtyStepper, CartDrawer, ProfileDialog,
 │                           ProductFormDialog, ConfirmDialog, OrderStatusChip

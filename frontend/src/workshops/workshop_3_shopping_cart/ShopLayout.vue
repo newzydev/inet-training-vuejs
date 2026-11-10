@@ -85,7 +85,7 @@
 import { mapGetters, mapState } from 'vuex'
 import { imageUrl } from './api'
 import CartDrawer from './components/CartDrawer.vue'
-import BrandLogo from '@/shell/BrandLogo.vue'
+import BrandLogo from '@/components/BrandLogo.vue'
 import ProfileDialog from './components/ProfileDialog.vue'
 
 export default {

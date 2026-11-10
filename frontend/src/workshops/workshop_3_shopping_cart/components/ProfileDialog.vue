@@ -23,7 +23,7 @@
 
         <v-alert v-if="error" type="error" text dense>{{ error }}</v-alert>
 
-        <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/shell) -->
+        <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/components) -->
         <AppField label="ชื่อ" field-id="profile-name">
           <v-text-field id="profile-name" v-model="name" outlined placeholder="ชื่อที่แสดง" prepend-inner-icon="mdi-account-outline" />
         </AppField>
@@ -55,7 +55,7 @@
 
 <script>
 import api, { imageUrl } from '../api'
-import AppField from '@/shell/AppField.vue'
+import AppField from '@/components/AppField.vue'
 
 export default {
   components: { AppField },

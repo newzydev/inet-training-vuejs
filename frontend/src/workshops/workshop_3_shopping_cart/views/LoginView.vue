@@ -29,7 +29,7 @@
 
         <!-- @submit.prevent = กด Enter หรือกดปุ่มแล้วเรียก submit() โดยไม่รีเฟรชหน้า -->
         <v-form ref="form" @submit.prevent="submit">
-          <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/shell) -->
+          <!-- label อยู่ด้านบนช่องกรอก (คอมโพเนนต์ AppField ใน src/components) -->
           <AppField v-if="tab === 1" label="ชื่อ" field-id="reg-name" required>
             <v-text-field id="reg-name" v-model="name" autocomplete="off" outlined placeholder="ชื่อของคุณ" prepend-inner-icon="mdi-account-outline" :rules="[required]" />
           </AppField>
@@ -61,8 +61,8 @@
 
 <script>
 import api from '../api'
-import AppField from '@/shell/AppField.vue'
-import BrandLogo from '@/shell/BrandLogo.vue'
+import AppField from '@/components/AppField.vue'
+import BrandLogo from '@/components/BrandLogo.vue'
 
 export default {
   components: { AppField, BrandLogo },

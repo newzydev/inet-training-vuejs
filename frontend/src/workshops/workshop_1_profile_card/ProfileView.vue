@@ -177,7 +177,7 @@
 
 <script>
 import SectionTitle from './components/SectionTitle.vue'
-import BrandLogo from '@/shell/BrandLogo.vue'
+import BrandLogo from '@/components/BrandLogo.vue'
 
 export default {
   components: { SectionTitle, BrandLogo },

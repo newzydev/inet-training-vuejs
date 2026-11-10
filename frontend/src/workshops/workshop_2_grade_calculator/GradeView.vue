@@ -104,7 +104,7 @@
 
 <script>
 import GradeScale from './components/GradeScale.vue'
-import BrandLogo from '@/shell/BrandLogo.vue'
+import BrandLogo from '@/components/BrandLogo.vue'
 
 export default {
   components: { GradeScale, BrandLogo },
