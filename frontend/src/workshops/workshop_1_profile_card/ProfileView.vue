@@ -248,10 +248,10 @@ export default {
         {
           title: 'การเขียนโปรแกรม',
           icon: 'mdi-code-tags',
-          items: ['C', 'C++', 'C#', '.NET', 'Java', 'JavaScript', 'PHP', 'EJS', 'React', 'MySQL', 'PostgreSQL']
+          items: ['C', 'C++', 'C#', '.NET', 'Java', 'JavaScript', 'PHP', 'Node.js', 'EJS', 'React', 'MySQL', 'PostgreSQL', 'MongoDB']
         },
         { title: 'โปรแกรมพื้นฐาน', icon: 'mdi-microsoft-office', items: ['Word', 'PowerPoint', 'Excel', 'Access'] },
-        { title: 'ออกแบบ', icon: 'mdi-palette', items: ['Photoshop', 'Illustrator', 'Audition'] }
+        { title: 'ออกแบบ', icon: 'mdi-palette', items: ['Photoshop', 'Illustrator', 'Audition', 'Canva', 'CapCut', 'Figma'] }
       ],
       languages: [
         { name: 'ไทย', level: 'ดีเยี่ยม', percent: 100 },
