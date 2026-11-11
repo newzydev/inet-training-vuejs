@@ -167,6 +167,23 @@
         </v-container>
       </section>
 
+      <!-- ================= สิ่งที่ถนัด (สรุปจากทักษะด้านบน) ================= -->
+      <section id="focus" class="section">
+        <v-container>
+          <SectionTitle label="Focus" title="สิ่งที่ฉันถนัด" />
+          <v-row>
+            <v-col v-for="f in focus" :key="f.title" cols="12" sm="6" md="3">
+              <v-card class="card pa-6 text-center" outlined height="100%">
+                <v-avatar size="56" :color="f.color" class="mb-4">
+                  <v-icon color="white">{{ f.icon }}</v-icon>
+                </v-avatar>
+                <h3 class="card-title mb-2">{{ f.title }}</h3>
+                <div class="grey--text text--darken-1">{{ f.text }}</div>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </section>
 
     <!-- ================= Footer ================= -->
     <v-footer color="#1e1b4b" dark class="justify-center text-center py-6">
@@ -250,8 +267,15 @@ export default {
           icon: 'mdi-code-tags',
           items: ['C', 'C++', 'C#', '.NET', 'Java', 'JavaScript', 'PHP', 'Node.js', 'EJS', 'React', 'MySQL', 'PostgreSQL', 'MongoDB']
         },
-        { title: 'เครื่องมือ', icon: 'mdi-tools', items: ['Git', 'GitHub', 'VS Code', 'Postman', 'Swagger', 'Docker', 'Jira', 'Word', 'PowerPoint', 'Excel', 'Access'] },
+        { title: 'เครื่องมือ', icon: 'mdi-tools', items: ['Git', 'GitHub', 'VS Code', 'Postman', 'Swagger', 'Docker', 'Word', 'PowerPoint', 'Excel', 'Access'] },
         { title: 'ออกแบบ', icon: 'mdi-palette', items: ['Photoshop', 'Illustrator', 'Audition', 'Canva', 'CapCut', 'Figma'] }
+      ],
+      // สิ่งที่ถนัด : สรุปจากทักษะด้านบน (ไม่เพิ่มข้อมูลใหม่)
+      focus: [
+        { icon: 'mdi-monitor-dashboard', color: '#4f46e5', title: 'Front-end', text: 'JavaScript, React และ Vue สร้างหน้าเว็บใช้งานง่าย' },
+        { icon: 'mdi-server', color: '#7c3aed', title: 'Back-end', text: 'Node.js, .NET, PHP และ Java พัฒนาระบบหลังบ้านและ API' },
+        { icon: 'mdi-database', color: '#0891b2', title: 'ฐานข้อมูล', text: 'MySQL, PostgreSQL และ MongoDB ออกแบบและจัดการข้อมูล' },
+        { icon: 'mdi-api', color: '#ea580c', title: 'API และเครื่องมือ', text: 'Postman, Swagger, Git และ GitHub ทดสอบและทำงานเป็นทีม' }
       ],
       languages: [
         { name: 'ไทย', level: 'ดีเยี่ยม', percent: 100 },
