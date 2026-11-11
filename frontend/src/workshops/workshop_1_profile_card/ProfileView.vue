@@ -250,7 +250,7 @@ export default {
           icon: 'mdi-code-tags',
           items: ['C', 'C++', 'C#', '.NET', 'Java', 'JavaScript', 'PHP', 'Node.js', 'EJS', 'React', 'MySQL', 'PostgreSQL', 'MongoDB']
         },
-        { title: 'โปรแกรมพื้นฐาน', icon: 'mdi-microsoft-office', items: ['Word', 'PowerPoint', 'Excel', 'Access'] },
+        { title: 'เครื่องมือ', icon: 'mdi-tools', items: ['Git', 'GitHub', 'VS Code', 'Postman', 'Swagger', 'Docker', 'Jira', 'Word', 'PowerPoint', 'Excel', 'Access'] },
         { title: 'ออกแบบ', icon: 'mdi-palette', items: ['Photoshop', 'Illustrator', 'Audition', 'Canva', 'CapCut', 'Figma'] }
       ],
       languages: [
