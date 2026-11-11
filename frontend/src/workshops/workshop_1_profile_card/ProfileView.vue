@@ -267,7 +267,7 @@ export default {
           icon: 'mdi-code-tags',
           items: ['C', 'C++', 'C#', '.NET', 'Java', 'JavaScript', 'PHP', 'Node.js', 'EJS', 'React', 'MySQL', 'PostgreSQL', 'MongoDB']
         },
-        { title: 'เครื่องมือ', icon: 'mdi-tools', items: ['Git', 'GitHub', 'VS Code', 'Postman', 'Swagger', 'Docker', 'Word', 'PowerPoint', 'Excel', 'Access'] },
+        { title: 'เครื่องมือ', icon: 'mdi-tools', items: ['Git', 'GitHub', 'Visual Studio Code', 'Microsoft Visual Studio', 'Postman', 'Swagger', 'Docker', 'Word', 'PowerPoint', 'Excel', 'Access'] },
         { title: 'ออกแบบ', icon: 'mdi-palette', items: ['Photoshop', 'Illustrator', 'Audition', 'Canva', 'CapCut', 'Figma'] }
       ],
       // สิ่งที่ถนัด : สรุปจากทักษะด้านบน (ไม่เพิ่มข้อมูลใหม่)
